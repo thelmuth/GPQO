@@ -47,20 +47,48 @@ public class Simulator {
 		g4.inner = r4;
 		g4.outer = r5;
 		
+		g1.leftRelation = r2;
+		g1.rightRelation = r4;
+		g2.leftRelation = r1;
+		g2.rightRelation = r3;
+		g3.leftRelation = r2;
+		g3.rightRelation = r3;
+		g4.leftRelation = r4;
+		g4.rightRelation = r5;
+		
 		
 		Individual ind = new Individual();
 		
 		ind.root = g1;
 		
-		ArrayList<Gene> leavesOfi = ind.leavesOf();
-		
-		for(int n = 0; n < leavesOfi.size(); n++){
-			System.out.println("relation" + ((Relation)leavesOfi.get(n)).relationId);
+		ArrayList<Gene> leavesOfind = ind.leavesOf();
+		for(int n = 0; n < leavesOfind.size(); n++){
+			System.out.println("relation" + ((Relation)leavesOfind.get(n)).relationId);
 		}
 		
 		ArrayList<Join> nodes = ind.postorder();
 		for (Join node : nodes)
 			System.out.println(node.joinId);
+		
+		Individual newInd = null;
+		
+		try {
+			newInd = ind.gamma(nodes, leavesOfind);
+		} catch (Exception e) {
+			System.err.println(e.toString());
+		}
+		
+		System.out.println("here we are");
+		
+		
+		ArrayList<Gene> leaves2 = newInd.leavesOf();
+		for(int n = 0; n < leaves2.size(); n++){
+			System.out.println("relation" + ((Relation)leaves2.get(n)).relationId);
+		}
+		
+		ArrayList<Join> nodes2 = newInd.postorder();
+		for (Join node : nodes2)
+			System.out.println("new nodes" + node.joinId);
 		
 	}
 

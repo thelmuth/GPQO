@@ -9,10 +9,26 @@ public class Join extends Gene {
 	public Gene inner; //Left child
 	public Gene outer; //Right child
 	
-	public Relation relation1;
-	public Relation relation2;
+	public Relation leftRelation;
+	public Relation rightRelation;
 	
+	public Join() {
+		
+	}
 	
+	public Join(Join join) {
+		this.joinId = join.joinId;
+		this.joinType = join.joinType;
+		
+		this.leftRelation = join.leftRelation;
+		this.rightRelation = join.rightRelation;
+		
+		this.inner = null;
+		this.outer = null;
+	}
+
+
+
 	public ArrayList<Join> pOrder(){
 		
 		ArrayList<Join> returnList = new ArrayList<Join>();
@@ -25,6 +41,10 @@ public class Join extends Gene {
 		
 		returnList.add(this);
 		return returnList;
+	}
+	
+	public String toString(){
+		return "join " + joinId;
 	}
 	
 }
