@@ -15,6 +15,7 @@ public class Simulator {
 
 	public static void main(String[] args) {
 
+		/*
 		Join g1 = new Join();
 		Join g2 = new Join();
 		Join g3 = new Join();
@@ -89,6 +90,25 @@ public class Simulator {
 		ArrayList<Join> nodes2 = newInd.postorder();
 		for (Join node : nodes2)
 			System.out.println("new nodes" + node.joinId);
+			*/
+		
+		
+		
+		//Testing joinGraph
+		Individual ind = new Individual();
+		
+		ArrayList<JoinGraphNode> joinGraph = new ArrayList<JoinGraphNode>();
+		
+		JoinGraphNode n1 = new JoinGraphNode(15, 13, 14); 
+		JoinGraphNode n2 = new JoinGraphNode(17, 14, 16);
+		JoinGraphNode n3 = new JoinGraphNode(16, 14, 15);
+		
+		joinGraph.add(n1);
+		joinGraph.add(n2);
+		joinGraph.add(n3);
+		
+		ind.randomize(joinGraph);
+		
 		
 	}
 

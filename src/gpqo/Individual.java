@@ -72,4 +72,71 @@ public class Individual {
 	public Individual clone(){
 		return null;
 	}
+	
+	public void randomize(ArrayList<JoinGraphNode> data){
+		
+		root = createRandomIndividual(data);
+	}
+	
+	public Join createRandomIndividual(ArrayList<JoinGraphNode> data){
+		Random generator = new Random();
+		int randomIndex = generator.nextInt(data.size());
+		
+		JoinGraphNode joinGraphNode = data.get(randomIndex);
+		data.remove(randomIndex);
+		
+		ArrayList<JoinGraphNode> joinGraphNodeListInner = getSubgraph(data, joinGraphNode.innerRelInd);
+		ArrayList<JoinGraphNode> joinGraphNodeListOuter = getSubgraph(data, joinGraphNode.outerRelInd);
+		
+		Gene inner = null;
+		if (joinGraphNodeListInner.size() == 0)
+			inner = new Relation(joinGraphNode.innerRelInd);
+		else
+			inner = createRandomIndividual(joinGraphNodeListInner);
+		
+		Gene outer = null;
+		if (joinGraphNodeListOuter.size() == 0)
+			outer = new Relation(joinGraphNode.outerRelInd);
+		else
+			outer = createRandomIndividual(joinGraphNodeListOuter);
+
+		Join join = new Join(joinGraphNode.joinInd, new Relation(joinGraphNode.innerRelInd), 
+				new Relation(joinGraphNode.outerRelInd), inner, outer);
+		
+		inner.parent = join;
+		outer.parent = join;
+		
+		return join;
+	}
+	
+	public ArrayList<JoinGraphNode> getSubgraph(ArrayList<JoinGraphNode> joinGraphNodeList, int relationId){
+		
+		ArrayList<JoinGraphNode> returnList = new ArrayList<JoinGraphNode>();
+		
+		Stack<Integer> relToProcess = new Stack<Integer>();
+		relToProcess.add(relationId);
+		
+		while(!relToProcess.empty()){
+			int relInd = relToProcess.pop();
+			
+			ArrayList<JoinGraphNode> joinGraphNodesToRemove = new ArrayList<JoinGraphNode>();
+			
+			for(JoinGraphNode joinGraphNode : joinGraphNodeList){
+				
+				int newRelInd = joinGraphNode.returnOtherRelation(relInd);
+				if (newRelInd == -1)
+					continue;
+				
+				relToProcess.add(newRelInd);
+				returnList.add(joinGraphNode);
+				joinGraphNodesToRemove.add(joinGraphNode);
+			}
+			
+			for (JoinGraphNode joinGraphNode : joinGraphNodesToRemove)
+				joinGraphNodeList.remove(joinGraphNode);
+		}
+		
+		return returnList;
+	}
+	
 }

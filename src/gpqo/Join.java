@@ -1,6 +1,7 @@
 package gpqo;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Join extends Gene {
 	public int joinId;
@@ -12,10 +13,13 @@ public class Join extends Gene {
 	public Relation leftRelation;
 	public Relation rightRelation;
 	
+	public static String joinTypes = "SBH";
+	
 	public Join() {
 		
 	}
 	
+	//Copy constructor
 	public Join(Join join) {
 		this.joinId = join.joinId;
 		this.joinType = join.joinType;
@@ -25,6 +29,22 @@ public class Join extends Gene {
 		
 		this.inner = null;
 		this.outer = null;
+	}
+	
+	//Constructor for random join
+	public Join(int joinId, Relation leftRelation, Relation rightRelation, Gene inner, Gene outer){
+		this.joinId = joinId;
+		
+		Random generator = new Random();
+		int randomIndex = generator.nextInt(joinTypes.length());
+		
+		this.joinType = joinTypes.charAt(randomIndex);
+		
+		this.leftRelation = leftRelation;
+		this.rightRelation = rightRelation;
+		
+		this.inner = inner;
+		this.outer = outer;
 	}
 
 
