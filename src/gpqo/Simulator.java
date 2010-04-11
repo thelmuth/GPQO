@@ -95,7 +95,7 @@ public class Simulator {
 		
 		
 		//Testing joinGraph
-		Individual ind = new Individual();
+		/*Individual ind = new Individual();
 		
 		ArrayList<JoinGraphNode> joinGraph = new ArrayList<JoinGraphNode>();
 		
@@ -107,8 +107,92 @@ public class Simulator {
 		joinGraph.add(n2);
 		joinGraph.add(n3);
 		
-		ind.randomize(joinGraph);
+		ind.randomize(joinGraph);*/
 		
+		
+		Relation rel1Indiv1 = new Relation(1);
+		Relation rel2Indiv1 = new Relation(2);
+		Relation rel3Indiv1 = new Relation(3);
+		Relation rel4Indiv1 = new Relation(4);
+		Relation rel5Indiv1 = new Relation(5);
+		Relation rel6Indiv1 = new Relation(6);
+		Relation rel7Indiv1 = new Relation(7);
+		Relation rel8Indiv1 = new Relation(8);
+		Relation rel9Indiv1 = new Relation(9);
+		Relation rel10Indiv1 = new Relation(10);
+		Relation rel11Indiv1 = new Relation(11);
+		Relation rel12Indiv1 = new Relation(12);
+		Relation rel13Indiv1 = new Relation(13);
+		Relation rel14Indiv1 = new Relation(14);
+		Relation rel15Indiv1 = new Relation(15);
+		Relation rel16Indiv1 = new Relation(16);
+		Relation rel17Indiv1 = new Relation(17);
+		Relation rel18Indiv1 = new Relation(18);
+		Relation rel19Indiv1 = new Relation(19);
+		
+		Join join15Indiv1 = new Join(15, rel13Indiv1, rel14Indiv1, rel13Indiv1, rel14Indiv1);
+		Join join16Indiv1 = new Join(16, rel14Indiv1, rel15Indiv1, join15Indiv1, rel15Indiv1);
+		Join join17Indiv1 = new Join(17, rel14Indiv1, rel16Indiv1, join16Indiv1, rel16Indiv1);
+		Join join4Indiv1 = new Join(4, rel4Indiv1, rel5Indiv1, rel4Indiv1, rel5Indiv1);
+		Join join3Indiv1 = new Join(3, rel3Indiv1, rel4Indiv1, rel3Indiv1, join4Indiv1);
+		Join join5Indiv1 = new Join(5, rel5Indiv1, rel6Indiv1, join3Indiv1, rel6Indiv1);
+		Join join2Indiv1 = new Join(2, rel2Indiv1, rel3Indiv1, rel2Indiv1, join5Indiv1);
+		Join join6Indiv1 = new Join(6, rel6Indiv1, rel7Indiv1, join2Indiv1, rel7Indiv1);
+		Join join1Indiv1 = new Join(1, rel1Indiv1, rel5Indiv1, rel1Indiv1, join6Indiv1);
+		Join join8Indiv1 = new Join(8, rel8Indiv1, rel9Indiv1, rel8Indiv1, rel9Indiv1);
+		Join join11Indiv1 = new Join(11, rel10Indiv1, rel19Indiv1, rel10Indiv1, rel19Indiv1);
+		Join join9Indiv1 = new Join(9, rel9Indiv1, rel10Indiv1, join8Indiv1, join11Indiv1);
+		Join join12Indiv1 = new Join(12, rel8Indiv1, rel11Indiv1, join9Indiv1, rel11Indiv1);
+		Join join7Indiv1 = new Join(7, rel7Indiv1, rel8Indiv1, join1Indiv1, join12Indiv1);
+		Join join10Indiv1 = new Join(10, rel10Indiv1, rel18Indiv1, join7Indiv1, rel18Indiv1);
+		Join join18Indiv1 = new Join(18, rel12Indiv1, rel17Indiv1, rel12Indiv1, rel17Indiv1);
+		Join join13Indiv1 = new Join(13, rel11Indiv1, rel12Indiv1, join10Indiv1, join18Indiv1);
+		Join join14Indiv1 = new Join(14, rel12Indiv1, rel13Indiv1, join17Indiv1, join13Indiv1);
+		
+		Individual indiv1 = new Individual();
+		indiv1.root = join14Indiv1;
+		
+		Relation rel1Indiv2 = new Relation(1);
+		Relation rel2Indiv2 = new Relation(2);
+		Relation rel3Indiv2 = new Relation(3);
+		Relation rel4Indiv2 = new Relation(4);
+		Relation rel5Indiv2 = new Relation(5);
+		Relation rel6Indiv2 = new Relation(6);
+		Relation rel7Indiv2 = new Relation(7);
+		Relation rel8Indiv2 = new Relation(8);
+		Relation rel9Indiv2 = new Relation(9);
+		Relation rel10Indiv2 = new Relation(10);
+		Relation rel11Indiv2 = new Relation(11);
+		Relation rel12Indiv2 = new Relation(12);
+		Relation rel13Indiv2 = new Relation(13);
+		Relation rel14Indiv2 = new Relation(14);
+		Relation rel15Indiv2 = new Relation(15);
+		Relation rel16Indiv2 = new Relation(16);
+		Relation rel17Indiv2 = new Relation(17);
+		Relation rel18Indiv2 = new Relation(18);
+		Relation rel19Indiv2 = new Relation(19);
+		
+		Join join1Indiv2 = new Join(1, rel1Indiv2, rel5Indiv2, rel1Indiv2, rel5Indiv2);
+		Join join4Indiv2 = new Join(4, rel4Indiv2, rel5Indiv2, rel4Indiv2, join1Indiv2);
+		Join join3Indiv2 = new Join(3, rel3Indiv2, rel4Indiv2, join4Indiv2, rel3Indiv2);
+		Join join2Indiv2 = new Join(2, rel2Indiv2, rel3Indiv2, join3Indiv2, rel2Indiv2);
+		Join join7Indiv2 = new Join(7, rel7Indiv2, rel8Indiv2, rel7Indiv2, rel8Indiv2);
+		Join join6Indiv2 = new Join(6, rel6Indiv2, rel7Indiv2, rel6Indiv2, join7Indiv2);
+		Join join13Indiv2 = new Join(13, rel11Indiv2, rel12Indiv2, rel11Indiv2, rel12Indiv2);
+		Join join12Indiv2 = new Join(12, rel8Indiv2, rel11Indiv2, join6Indiv2, join13Indiv2);
+		Join join18Indiv2 = new Join(18, rel12Indiv2, rel17Indiv2, join12Indiv2, rel17Indiv2);
+		Join join5Indiv2 = new Join(5, rel5Indiv2, rel6Indiv2, join2Indiv2, join18Indiv2);
+		Join join10Indiv2 = new Join(10, rel10Indiv2, rel18Indiv2, rel10Indiv2, rel18Indiv2);
+		Join join9Indiv2 = new Join(9, rel9Indiv2, rel10Indiv2, rel9Indiv2, join10Indiv2);
+		Join join8Indiv2 = new Join(8, rel8Indiv2, rel9Indiv2, join5Indiv2, join9Indiv2);
+		Join join11Indiv2 = new Join(11, rel10Indiv2, rel19Indiv2, join8Indiv2, rel19Indiv2);
+		Join join16Indiv2 = new Join(16, rel14Indiv2, rel15Indiv2, rel14Indiv2, rel15Indiv2);
+		Join join15Indiv2 = new Join(15, rel13Indiv2, rel14Indiv2, rel13Indiv2, join16Indiv2);
+		Join join14Indiv2 = new Join(14, rel12Indiv2, rel13Indiv2, join11Indiv2, join15Indiv2);
+		Join join17Indiv2 = new Join(17, rel14Indiv2, rel16Indiv2, join14Indiv2, rel16Indiv2);
+		
+		Individual indiv2 = new Individual();
+		indiv2.root = join17Indiv2;
 		
 	}
 
