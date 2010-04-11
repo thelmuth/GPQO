@@ -4,13 +4,62 @@ import java.util.*;
 
 public class Simulator {
 
-	static void crossover(Individual T1, Gene S1, Individual T2, Gene S2,
-			Individual return1, Individual return2){
+	private static void crossover(Individual T1, Join S1, Individual T2, Join S2, Individual return1, Individual return2) throws Exception{
+		//Create first individual
+		ArrayList<Join> nodelist1 = createNodeList(T1.postorder(), S2.pOrder());
+		ArrayList<Gene> tSet1 = createTSet(T1.leavesOf(), S2.leavesOf());
+		tSet1.add(S2);
+		return1 = Individual.gamma(nodelist1, tSet1);
+		
+		//Create first individual
+		ArrayList<Join> nodelist2 = createNodeList(T2.postorder(), S1.pOrder());
+		ArrayList<Gene> tSet2 = createTSet(T2.leavesOf(), S1.leavesOf());
+		tSet2.add(S1);
+		return2 = Individual.gamma(nodelist2, tSet2);
+	}
+
+	private static void mutation(Individual T){
 		
 	}
 	
-	static void mutation(Individual T){
+	private static ArrayList<Join> createNodeList(ArrayList<Join> postOrderT, ArrayList<Join> postOrderS){
+		ArrayList<Join> nodelist = new ArrayList<Join>();
+		boolean inS = false;
 		
+		for(Join j : postOrderT){
+			inS = false;
+			
+			for(Join k : postOrderS){
+				if(j.joinId == k.joinId){
+					inS = true;
+					break;
+				}
+			}
+			if(!inS){
+				nodelist.add(j);
+			}
+		}
+		return nodelist;
+	}
+	
+	private static ArrayList<Gene> createTSet(ArrayList<Gene> leavesOfT, ArrayList<Gene> leavesOfS) {
+		ArrayList<Gene> TSet = new ArrayList<Gene>();
+		boolean inS = false;
+		
+		for(Gene j : leavesOfT){
+			inS = false;
+			
+			for(Gene k : leavesOfS){
+				if(((Relation)j).relationId == ((Relation)k).relationId){
+					inS = true;
+					break;
+				}
+			}
+			if(!inS){
+				TSet.add(j);
+			}
+		}
+		return TSet;
 	}
 
 	public static void main(String[] args) {
@@ -94,7 +143,7 @@ public class Simulator {
 		
 		
 		
-		//Testing joinGraph
+		/* //Testing joinGraph
 		Individual ind = new Individual();
 		
 		ArrayList<JoinGraphNode> joinGraph = new ArrayList<JoinGraphNode>();
@@ -108,6 +157,7 @@ public class Simulator {
 		joinGraph.add(n3);
 		
 		ind.randomize(joinGraph);
+		*/
 		
 		
 	}

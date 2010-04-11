@@ -14,7 +14,7 @@ public class Individual {
 		return root.leavesOf();
 	}
 	
-	public Individual gamma(ArrayList<Join> nodeList, ArrayList<Gene> tSet) throws Exception{
+	public static Individual gamma(ArrayList<Join> nodeList, ArrayList<Gene> tSet) throws Exception{
 		Individual result = new Individual();
 		
 		for(Join join : nodeList){
@@ -40,7 +40,7 @@ public class Individual {
 		return result;
 	}
 
-	private Gene tSetFindAndRemove(ArrayList<Gene> tSet, Relation relationRef) {
+	private static Gene tSetFindAndRemove(ArrayList<Gene> tSet, Relation relationRef) {
 		
 		for(int i = 0; i < tSet.size(); i++){
 			Gene g = tSet.get(i);
