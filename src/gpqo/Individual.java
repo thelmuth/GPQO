@@ -3,9 +3,10 @@ import java.util.*;
 
 public class Individual {
 
-	Join root;
-	double cost;
-
+	public Join root;
+	public double cost;
+	public int numJoins;
+	
 	public ArrayList<Join> postorder(){
 		return root.pOrder();
 	}
@@ -14,8 +15,20 @@ public class Individual {
 		return root.leavesOf();
 	}
 	
+	public Individual(int numJoins){
+		this.numJoins = numJoins;
+	}
+	
+	public Individual(Individual individual){
+		
+	}
+	
+	public void calcCost(){
+		cost = root.cost()[0];
+	}
+	
 	public static Individual gamma(ArrayList<Join> nodeList, ArrayList<Gene> tSet) throws Exception{
-		Individual result = new Individual();
+		Individual result = new Individual(nodeList.size());
 		
 		for(Join join : nodeList){
 			Join newJoin = new Join(join);

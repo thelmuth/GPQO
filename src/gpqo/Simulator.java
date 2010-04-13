@@ -11,6 +11,7 @@ public class Simulator {
 		tSet1.add(S2);
 		Individual return1 = Individual.gamma(nodelist1, tSet1);
 
+		return1.calcCost();
 		return return1;
 /*
 		
@@ -165,7 +166,6 @@ public class Simulator {
 		*/
 		
 		
-		
 		Individual indiv1 = sampleIndividual1();
 		Individual indiv2 = sampleIndividual2();
 		
@@ -173,8 +173,8 @@ public class Simulator {
 		Join subtree1 = indiv1.findJoinWithId(16);
 		Join subtree2 = indiv2.findJoinWithId(18);
 		
-		Individual newIndiv1 = new Individual();
-		Individual newIndiv2 = new Individual();
+		Individual newIndiv1 = new Individual(indiv1.numJoins);
+		Individual newIndiv2 = new Individual(indiv1.numJoins);
 		
 		
 		
@@ -243,8 +243,10 @@ public class Simulator {
 		Join join13Indiv1 = new Join(13, rel11Indiv1, rel12Indiv1, join10Indiv1, join18Indiv1);
 		Join join14Indiv1 = new Join(14, rel13Indiv1, rel12Indiv1, join17Indiv1, join13Indiv1);
 		
-		Individual indiv1 = new Individual();
+		int numJoins = 18;
+		Individual indiv1 = new Individual(numJoins);
 		indiv1.root = join14Indiv1;
+		indiv1.calcCost();
 		
 		return indiv1;
 	}
@@ -289,10 +291,47 @@ public class Simulator {
 		Join join14Indiv2 = new Join(14, rel12Indiv2, rel13Indiv2, join11Indiv2, join15Indiv2);
 		Join join17Indiv2 = new Join(17, rel14Indiv2, rel16Indiv2, join14Indiv2, rel16Indiv2);
 		
-		Individual indiv2 = new Individual();
+		int numJoins = 18;
+		Individual indiv2 = new Individual(numJoins);
 		indiv2.root = join17Indiv2;
+		indiv2.calcCost();
 		
 		return indiv2;
+	}
+	
+	private static ArrayList<Individual> createPopulation(int count){
+		ArrayList<JoinGraphNode> joinGraph = new ArrayList<JoinGraphNode>();
+		joinGraph.add(new JoinGraphNode(1, 1, 5));
+		joinGraph.add(new JoinGraphNode(2, 3, 2));
+		joinGraph.add(new JoinGraphNode(3, 4, 3));
+		joinGraph.add(new JoinGraphNode(4, 4, 5));
+		joinGraph.add(new JoinGraphNode(5, 5, 6));
+		joinGraph.add(new JoinGraphNode(6, 6, 7));
+		joinGraph.add(new JoinGraphNode(7, 7, 8));
+		joinGraph.add(new JoinGraphNode(8, 8, 9));
+		joinGraph.add(new JoinGraphNode(9, 9, 10));
+		joinGraph.add(new JoinGraphNode(10, 10, 18));
+		joinGraph.add(new JoinGraphNode(11, 10, 19));
+		joinGraph.add(new JoinGraphNode(12, 8,  11));
+		joinGraph.add(new JoinGraphNode(13, 11, 12));
+		joinGraph.add(new JoinGraphNode(14, 12, 13));
+		joinGraph.add(new JoinGraphNode(15, 13, 14));
+		joinGraph.add(new JoinGraphNode(16, 14, 15));
+		joinGraph.add(new JoinGraphNode(17, 14, 16));
+		joinGraph.add(new JoinGraphNode(18, 12, 17));
+		
+		ArrayList<Individual> population = new ArrayList<Individual>();
+		
+		int numJoins = joinGraph.size();
+		while(count-- > 0){
+			Individual individual = new Individual(numJoins);
+			individual.randomize(joinGraph);
+			individual.calcCost();
+			population.add(individual);
+		}
+		
+		return population;
+		
 	}
 
 }
