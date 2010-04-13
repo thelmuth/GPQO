@@ -34,7 +34,7 @@ public class Simulator {
 			break;
 		}
 		
-		return1.calCost();
+		return1.calcCost();
 		return return1;
 	}
 	
