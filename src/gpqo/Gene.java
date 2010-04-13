@@ -2,7 +2,7 @@ package gpqo;
 
 import java.util.*;
 
-public class Gene {
+public abstract class Gene {
 
 	public Join parent;
 
@@ -43,5 +43,17 @@ public class Gene {
 		
 		return false;
 	}
+	
+	public String getTreeString() {
+		if(this instanceof Relation)
+			return "";
+		
+		String str = " - The children of " + this + " are " + ((Join)this).inner + " and " + ((Join)this).outer + ".\n";
+		
+		return str + ((Join)this).inner.getTreeString() + ((Join)this).outer.getTreeString();
+	}
+	
+	
+	abstract public String toString();
 	
 }

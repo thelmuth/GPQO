@@ -4,21 +4,26 @@ import java.util.*;
 
 public class Simulator {
 
-	private static void crossover(Individual T1, Join S1, Individual T2, Join S2, Individual return1, Individual return2) throws Exception{
+	private static Individual crossover(Individual T1, Join S2) throws Exception{
 		//Create first individual
 		ArrayList<Join> nodelist1 = createNodeList(T1.postorder(), S2.pOrder());
 		ArrayList<Gene> tSet1 = createTSet(T1.leavesOf(), S2.leavesOf());
 		tSet1.add(S2);
-		return1 = Individual.gamma(nodelist1, tSet1);
+		Individual return1 = Individual.gamma(nodelist1, tSet1);
+
+		return return1;
+/*
 		
 		//Create first individual
 		ArrayList<Join> nodelist2 = createNodeList(T2.postorder(), S1.pOrder());
 		ArrayList<Gene> tSet2 = createTSet(T2.leavesOf(), S1.leavesOf());
 		tSet2.add(S1);
-		return2 = Individual.gamma(nodelist2, tSet2);
+		return2 = Individual.gamma(nodelist2, tSet2);*/
 	}
 
 	private static void mutation(Individual T){
+		
+		//NOTE: if we have a mutation operator that swaps the children of a join, will it also have to swap that join's leftRelation and rightRelation???
 		
 	}
 	
@@ -165,9 +170,35 @@ public class Simulator {
 		Individual indiv2 = sampleIndividual2();
 		
 		//Try crossover here.
+		Join subtree1 = indiv1.findJoinWithId(16);
+		Join subtree2 = indiv2.findJoinWithId(18);
 		
-		//NEED A METHOD TO SELECT A JOIN WITH A SPECIFIC JOINID
+		Individual newIndiv1 = new Individual();
+		Individual newIndiv2 = new Individual();
+		
+		
+		
 
+		//System.out.println("Printing indiv1");
+		//System.out.println(indiv1);
+		
+		System.out.println("Printing indiv2");
+		System.out.println(indiv2);
+		
+		try {
+			newIndiv1 = crossover(indiv1, subtree2);
+			newIndiv2 = crossover(indiv2, subtree1);
+		} catch (Exception e) {
+			System.err.println("Error during crossover: " + e);
+		}
+		
+
+		//System.out.println("\nPrinting newIndiv1");
+		//System.out.println(newIndiv1);
+
+		
+		System.out.println("\nPrinting newIndiv2");
+		System.out.println(newIndiv2);
 		
 	}
 	
@@ -210,7 +241,7 @@ public class Simulator {
 		Join join10Indiv1 = new Join(10, rel10Indiv1, rel18Indiv1, join7Indiv1, rel18Indiv1);
 		Join join18Indiv1 = new Join(18, rel12Indiv1, rel17Indiv1, rel12Indiv1, rel17Indiv1);
 		Join join13Indiv1 = new Join(13, rel11Indiv1, rel12Indiv1, join10Indiv1, join18Indiv1);
-		Join join14Indiv1 = new Join(14, rel12Indiv1, rel13Indiv1, join17Indiv1, join13Indiv1);
+		Join join14Indiv1 = new Join(14, rel13Indiv1, rel12Indiv1, join17Indiv1, join13Indiv1);
 		
 		Individual indiv1 = new Individual();
 		indiv1.root = join14Indiv1;
@@ -241,8 +272,8 @@ public class Simulator {
 		
 		Join join1Indiv2 = new Join(1, rel1Indiv2, rel5Indiv2, rel1Indiv2, rel5Indiv2);
 		Join join4Indiv2 = new Join(4, rel4Indiv2, rel5Indiv2, rel4Indiv2, join1Indiv2);
-		Join join3Indiv2 = new Join(3, rel3Indiv2, rel4Indiv2, join4Indiv2, rel3Indiv2);
-		Join join2Indiv2 = new Join(2, rel2Indiv2, rel3Indiv2, join3Indiv2, rel2Indiv2);
+		Join join3Indiv2 = new Join(3, rel4Indiv2, rel3Indiv2, join4Indiv2, rel3Indiv2);
+		Join join2Indiv2 = new Join(2, rel3Indiv2, rel2Indiv2, join3Indiv2, rel2Indiv2);
 		Join join7Indiv2 = new Join(7, rel7Indiv2, rel8Indiv2, rel7Indiv2, rel8Indiv2);
 		Join join6Indiv2 = new Join(6, rel6Indiv2, rel7Indiv2, rel6Indiv2, join7Indiv2);
 		Join join13Indiv2 = new Join(13, rel11Indiv2, rel12Indiv2, rel11Indiv2, rel12Indiv2);

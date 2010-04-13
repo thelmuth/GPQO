@@ -65,10 +65,6 @@ public class Individual {
 		return null;
 	}
 
-	public Gene randomSubTree(){
-		return null;
-	}
-	
 	public Individual clone(){
 		return null;
 	}
@@ -137,6 +133,20 @@ public class Individual {
 		}
 		
 		return returnList;
+	}
+
+	//Finds a join with a particular joinID
+	public Join findJoinWithId(int id) {
+		return root.findJoinWithId(id);
+	}
+	
+	public Join randomSubTree(){
+		return null;
+	}
+	
+	
+	public String toString(){
+		return " = The root is J" + root.joinId + "\n" + root.getTreeString();
 	}
 	
 }

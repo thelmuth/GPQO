@@ -129,8 +129,28 @@ public class Join extends Gene {
 		return returnList;
 	}
 	
-	public String toString(){
-		return "join " + joinId;
+	public Join findJoinWithId(int id) {
+		if(joinId == id){
+			return this;
+		}
+		if(outer instanceof Join){
+			Join outerResult = ((Join)outer).findJoinWithId(id);
+			if(outerResult != null)
+				return outerResult;
+		}
+		if(inner instanceof Join){
+			Join innerResult = ((Join)inner).findJoinWithId(id);
+			if(innerResult != null)
+				return innerResult;
+		}
+		
+		return null;
 	}
+	
+	public String toString(){
+		return "J" + joinId;
+	}
+
+
 	
 }

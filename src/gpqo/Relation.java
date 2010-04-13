@@ -18,4 +18,9 @@ public class Relation extends Gene {
 		this.relationId = relationId;
 		this.size = size;
 	}
+	
+	public String toString(){
+		return "R" + relationId;
+	}
+	
 }
