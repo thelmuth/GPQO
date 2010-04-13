@@ -9,6 +9,11 @@ public class Relation extends Gene {
 	public Relation(){
 		this(-1, defaultSize);
 	}
+	
+	public Relation(Relation relation){
+		this.relationId = relation.relationId;
+		this.size = relation.size;
+	}
 
 	public Relation(int relationId){
 		this(relationId, defaultSize);
