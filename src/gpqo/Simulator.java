@@ -160,6 +160,19 @@ public class Simulator {
 		*/
 		
 		
+		
+		Individual indiv1 = sampleIndividual1();
+		Individual indiv2 = sampleIndividual2();
+		
+		//Try crossover here.
+		
+		//NEED A METHOD TO SELECT A JOIN WITH A SPECIFIC JOINID
+
+		
+	}
+	
+
+	private static Individual sampleIndividual1() {
 		Relation rel1Indiv1 = new Relation(1);
 		Relation rel2Indiv1 = new Relation(2);
 		Relation rel3Indiv1 = new Relation(3);
@@ -202,6 +215,10 @@ public class Simulator {
 		Individual indiv1 = new Individual();
 		indiv1.root = join14Indiv1;
 		
+		return indiv1;
+	}
+	
+	private static Individual sampleIndividual2() {
 		Relation rel1Indiv2 = new Relation(1);
 		Relation rel2Indiv2 = new Relation(2);
 		Relation rel3Indiv2 = new Relation(3);
@@ -244,6 +261,7 @@ public class Simulator {
 		Individual indiv2 = new Individual();
 		indiv2.root = join17Indiv2;
 		
+		return indiv2;
 	}
 
 }
