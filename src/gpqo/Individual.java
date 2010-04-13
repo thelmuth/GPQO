@@ -21,7 +21,9 @@ public class Individual {
 	}
 	
 	public Individual(Individual individual){
-		
+		root = new Join(individual.root);
+		cost = individual.cost;
+		numJoins = individual.numJoins;
 	}
 	
 	public void calcCost(){
@@ -85,11 +87,15 @@ public class Individual {
 	
 	public void randomize(ArrayList<JoinGraphNode> data){
 		
+
 		root = createRandomIndividual(data);
 	}
 	
 	public Join createRandomIndividual(ArrayList<JoinGraphNode> data){
 		Random generator = new Random();
+		int size = data.size();
+		if (size == 0)
+			System.out.println("Oh noes!");
 		int randomIndex = generator.nextInt(data.size());
 		
 		JoinGraphNode joinGraphNode = data.get(randomIndex);
