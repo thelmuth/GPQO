@@ -44,15 +44,40 @@ public abstract class Gene {
 		return false;
 	}
 	
-	public String getTreeString() {
+	public String getTreeString(int depth) {
 		if(this instanceof Relation)
 			return "";
 		
-		String str = " - The children of " + this + " are " + ((Join)this).inner + " and " + ((Join)this).outer + ".\n";
+		String str = "";
+		for(int i = 0; i < depth; i++)
+			str += "  ";
+		str += " - The children of " + this + " are " + ((Join)this).inner + " and " + ((Join)this).outer + ".\n";
 		
-		return str + ((Join)this).inner.getTreeString() + ((Join)this).outer.getTreeString();
+		return str + ((Join)this).inner.getTreeString(depth + 1) + ((Join)this).outer.getTreeString(depth + 1);
 	}
 	
+	
+	/*
+	// This version prints the tree in rightchild-parent-leftchild order, to produce a tree-like picture
+	public String getTreeString(int depth) {
+		if(this instanceof Relation)
+			return "";
+		
+		String str = "";
+		
+		str += ((Join)this).outer.getTreeString(depth + 1);
+		
+		for(int i = 0; i < depth; i++)
+			str += "     ";
+		//str += " - The children of " + this + " are " + ((Join)this).inner + " and " + ((Join)this).outer + ".\n";
+		
+		str += " -" + this + "\n";
+		
+		str += ((Join)this).inner.getTreeString(depth + 1);
+		
+		return str;
+	}
+	*/
 	
 	abstract public String toString();
 	

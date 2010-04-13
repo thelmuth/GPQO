@@ -4,6 +4,8 @@ import java.util.*;
 public class Individual {
 
 	Join root;
+	int numJoins;
+	
 	double cost;
 
 	public ArrayList<Join> postorder(){
@@ -141,12 +143,14 @@ public class Individual {
 	}
 	
 	public Join randomSubTree(){
-		return null;
+		Random rand = new Random();
+		int jId = rand.nextInt(numJoins) + 1;
+		return findJoinWithId(jId);
 	}
 	
 	
 	public String toString(){
-		return " = The root is J" + root.joinId + "\n" + root.getTreeString();
+		return " = The root is J" + root.joinId + "\n" + root.getTreeString(0);
 	}
 	
 }

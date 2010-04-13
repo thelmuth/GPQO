@@ -10,23 +10,38 @@ public class Simulator {
 		ArrayList<Gene> tSet1 = createTSet(T1.leavesOf(), S2.leavesOf());
 		tSet1.add(S2);
 		Individual return1 = Individual.gamma(nodelist1, tSet1);
-
 		return return1;
-/*
-		
-		//Create first individual
-		ArrayList<Join> nodelist2 = createNodeList(T2.postorder(), S1.pOrder());
-		ArrayList<Gene> tSet2 = createTSet(T2.leavesOf(), S1.leavesOf());
-		tSet2.add(S1);
-		return2 = Individual.gamma(nodelist2, tSet2);*/
 	}
 
-	private static void mutation(Individual T){
+	private static Individual mutation(Individual T){
+		int numMutations = 2;
 		
 		//NOTE: if we have a mutation operator that swaps the children of a join, will it also have to swap that join's leftRelation and rightRelation???
+		Individual return1 = new Individual(T);
 		
+		Random rand = new Random();
+		int chooseMutation = rand.nextInt(numMutations);
+		switch(chooseMutation){
+		case 0:
+			mutationOperator1(return1);
+			break;
+		case 1:
+			
+			break;
+		default:
+			break;
+		}
+		
+		return1.calCost();
+		return return1;
 	}
 	
+	//This mutation operator 
+	private static void mutationOperator1(Individual T) {
+		Join j = T.randomSubTree();
+		j.randomNewJoinAlgorithm();
+	}
+
 	private static ArrayList<Join> createNodeList(ArrayList<Join> postOrderT, ArrayList<Join> postOrderS){
 		ArrayList<Join> nodelist = new ArrayList<Join>();
 		boolean inS = false;
@@ -179,11 +194,11 @@ public class Simulator {
 		
 		
 
-		//System.out.println("Printing indiv1");
-		//System.out.println(indiv1);
+		System.out.println("Printing indiv1");
+		System.out.println(indiv1);
 		
-		System.out.println("Printing indiv2");
-		System.out.println(indiv2);
+		//System.out.println("Printing indiv2");
+		//System.out.println(indiv2);
 		
 		try {
 			newIndiv1 = crossover(indiv1, subtree2);
@@ -193,12 +208,11 @@ public class Simulator {
 		}
 		
 
-		//System.out.println("\nPrinting newIndiv1");
-		//System.out.println(newIndiv1);
+		System.out.println("\nPrinting newIndiv1");
+		System.out.println(newIndiv1);
 
-		
-		System.out.println("\nPrinting newIndiv2");
-		System.out.println(newIndiv2);
+		//System.out.println("\nPrinting newIndiv2");
+		//System.out.println(newIndiv2);
 		
 	}
 	

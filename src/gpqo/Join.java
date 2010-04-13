@@ -29,8 +29,19 @@ public class Join extends Gene {
 		this.leftRelation = join.leftRelation;
 		this.rightRelation = join.rightRelation;
 		
-		this.inner = null;
-		this.outer = null;
+		if(join.inner instanceof Join){
+			this.inner = new Join((Join)join.inner);
+		}
+		else{
+			this.inner = new Relation((Relation)join.inner);
+		}
+		if(join.outer instanceof Join){
+			this.outer = new Join((Join)join.outer);
+		}
+		else{
+			this.outer = new Relation((Relation)join.outer);
+		}
+		
 	}
 	
 	//Constructor for random join
@@ -147,9 +158,23 @@ public class Join extends Gene {
 		return null;
 	}
 	
+	public void randomNewJoinAlgorithm() {
+		char newAlg;
+		do{
+			Random generator = new Random();
+			newAlg = joinTypes.charAt(generator.nextInt(joinTypes.length()));
+			
+		} while(newAlg == joinType);
+		
+		joinType = newAlg;
+	}
+	
+	
 	public String toString(){
 		return "J" + joinId;
 	}
+
+
 
 
 	
