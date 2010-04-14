@@ -16,34 +16,32 @@ public class Simulator {
 	}
 
 	private static Individual mutation(Individual T){
-		int numMutations = 2;
+		final int MUT_PROB_1 = 35;
+		final int MUT_PROB_2 = 20;
+		final int MUT_PROB_3 = 20;
+		final int MUT_PROB_4 = 25;
 		
-		//NOTE: if we have a mutation operator that swaps the children of a join, will it also have to swap that join's leftRelation and rightRelation???
 		Individual return1 = new Individual(T);
 		
 		Random rand = new Random();
-		int chooseMutation = rand.nextInt(numMutations);
-		switch(chooseMutation){
-		case 0:
-			mutationOperator1(return1);
-			break;
-		case 1:
-			
-			break;
-		default:
-			break;
+		int chooseMutation = rand.nextInt(100);
+		if(chooseMutation < MUT_PROB_1){
+			T.mutationOperator1();
+		}
+		else if(chooseMutation < MUT_PROB_1 + MUT_PROB_2){
+			T.mutationOperator2();
+		}
+		else if(chooseMutation < MUT_PROB_1 + MUT_PROB_2 + MUT_PROB_3){
+			T.mutationOperator3();
+		}
+		else {
+			T.mutationOperator4();
 		}
 		
 		return1.calcCost();
 		return return1;
 	}
 	
-	//This mutation operator 
-	private static void mutationOperator1(Individual T) {
-		Join j = T.randomSubTree();
-		j.randomNewJoinAlgorithm();
-	}
-
 	private static ArrayList<Join> createNodeList(ArrayList<Join> postOrderT, ArrayList<Join> postOrderS){
 		ArrayList<Join> nodelist = new ArrayList<Join>();
 		boolean inS = false;

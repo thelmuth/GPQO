@@ -60,6 +60,22 @@ public class Join extends Gene {
 		this.outer = outer;
 	}
 
+
+	public ArrayList<JoinGraphNode> getJoinGraph() {
+		ArrayList<JoinGraphNode> graph = new ArrayList<JoinGraphNode>();
+		
+		graph.add(new JoinGraphNode(joinId, leftRelation.relationId, rightRelation.relationId));
+		
+		if(inner instanceof Join){
+			graph.addAll(((Join)inner).getJoinGraph());
+		}
+		if(outer instanceof Join){
+			graph.addAll(((Join)outer).getJoinGraph());
+		}
+		
+		return graph;
+	}
+	
 	public double[] cost(){
 		
 		double innerCost = 0, innerSize = 0, outerCost = 0, outerSize = 0;
@@ -169,11 +185,20 @@ public class Join extends Gene {
 		joinType = newAlg;
 	}
 	
+	public int subtreeSize() {
+		int size = 1;
+		
+		if(inner instanceof Join)
+			size += ((Join)inner).subtreeSize();
+		if(outer instanceof Join)
+			size += ((Join)outer).subtreeSize();
+		
+		return size;
+	}
 	
 	public String toString(){
 		return "J" + joinId;
 	}
-
 
 
 

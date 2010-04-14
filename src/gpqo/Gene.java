@@ -24,7 +24,6 @@ public abstract class Gene {
 		return leaves;
 	}
 
-
 	public boolean containsLeaf(Relation relationRef) {
 		
 		if(this instanceof Relation){
@@ -42,6 +41,14 @@ public abstract class Gene {
 		}
 		
 		return false;
+	}
+	
+	public void setParents(Join par) {
+		this.parent = par;
+		if(this instanceof Join){
+			((Join)this).inner.setParents((Join)this);
+			((Join)this).outer.setParents((Join)this);
+		}
 	}
 	
 	public String getTreeString(int depth) {

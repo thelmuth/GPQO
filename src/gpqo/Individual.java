@@ -8,6 +8,10 @@ public class Individual {
 	public int numJoins;
 	
 
+	public Individual(int numJoins){
+		this.numJoins = numJoins;
+	}
+	
 	public ArrayList<Join> postorder(){
 		return root.pOrder();
 	}
@@ -16,8 +20,9 @@ public class Individual {
 		return root.leavesOf();
 	}
 	
-	public Individual(int numJoins){
-		this.numJoins = numJoins;
+
+	public void setParents(){
+		root.setParents(null);
 	}
 	
 	public Individual(Individual individual){
@@ -86,8 +91,6 @@ public class Individual {
 	}
 	
 	public void randomize(ArrayList<JoinGraphNode> data){
-		
-
 		root = createRandomIndividual(data);
 	}
 	
@@ -166,9 +169,101 @@ public class Individual {
 		return findJoinWithId(jId);
 	}
 	
+	//This mutation operator gives a random join a new join algorithm.
+	public void mutationOperator1() {
+		Join j = randomSubTree();
+		j.randomNewJoinAlgorithm();
+	}
+
+	//This mutation operator swaps a join's inner and outer children.
+	public void mutationOperator2() {
+		Join j = randomSubTree();
+		
+		Gene temp = j.inner;
+		j.inner = j.outer;
+		j.outer = temp;
+		
+		Relation tempR = j.leftRelation;
+		j.leftRelation = j.rightRelation;
+		j.rightRelation = tempR;
+	}
 	
+	//This join operator randomizes an entire subtree. The subtree must contain at most half of the join nodes in the entire tree, since otherwise
+	//the operator would randomize too much.
+	public void mutationOperator3() {
+		Join j = randomSubTree();
+		
+		//Find subtree that is at most half the size of the full tree.
+		while(j.subtreeSize() * 2 > numJoins){
+			j = randomSubTree();
+		}
+		
+		ArrayList<JoinGraphNode> graphOfSubtree = j.getJoinGraph();
+		
+		if(j.parent.inner == j)
+			j.parent.inner = createRandomIndividual(graphOfSubtree);
+		else
+			j.parent.outer = createRandomIndividual(graphOfSubtree);
+	}
+
+	//This mutation operator swaps a random join and its parent
+	public void mutationOperator4() {
+		setParents();
+		
+		while(true){
+			//Choose a join to swap with its parent.
+			//Can't choose root, since it doesn't have a parent to swap with.
+			Join b = randomSubTree();
+			if(b.parent != null){
+				Join a = b.parent;
+				
+				//Find under which of b's children is one of a's relations
+				//Then swap a and b
+				if(b.inner.containsLeaf(a.leftRelation) || b.inner.containsLeaf(a.rightRelation)){
+					//b.inner contains one of a's relations
+					if(a.inner == b){
+						a.inner = b.inner;
+					}
+					else{
+						a.outer = b.inner;
+					}
+					b.inner = a;
+				}
+				else {
+					//b.outer contains one of a's relations
+					if(a.inner == b){
+						a.inner = b.outer;
+					}
+					else{
+						a.outer = b.outer;
+					}
+					b.outer = a;
+				}
+				
+				//Set new parent of b to have b as a child
+				Join p = a.parent;
+				if(a.parent == null){
+					//If here, a was the root, so now b is the root.
+					root = b;
+					b.parent = null;
+				}
+				else if(p.inner == a){
+					p.inner = b;
+				}
+				else {
+					p.outer = b;
+				}
+				
+				a.parent = b;
+				break;
+			}
+		}
+	}
+	
+
 	public String toString(){
 		return " = The root is J" + root.joinId + "\n" + root.getTreeString(0);
 	}
+
 	
 }
