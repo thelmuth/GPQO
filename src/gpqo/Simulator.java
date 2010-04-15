@@ -4,6 +4,88 @@ import java.util.*;
 
 public class Simulator {
 
+	private static final int POPULATION_SIZE = 500;
+	private static final int GENERATIONS = 200;
+	
+	private static final int TOURNAMENT_SIZE = 7;
+	
+	private static final int CROSSOVER_PERCENT = 85;
+	private static final int MUTATION_PERCENT = 10;
+	//CLONE_PERCENT is effectively 100 - CROSSOVER_PERCENT - MUTATION_PERCENT.
+
+	
+	public static void main(String[] args) {
+		
+		ArrayList<Individual> population = createPopulation(POPULATION_SIZE);
+		
+		for(int genNum = 0; genNum < GENERATIONS; genNum++){
+			population = createNextGeneration(population);
+			
+			generationReport(genNum, population);
+		}
+		
+		
+	}
+
+
+	private static ArrayList<Individual> createNextGeneration(ArrayList<Individual> population) {
+		ArrayList<Individual> nextPopulation = new ArrayList<Individual>();
+		
+		for(int i = 0; i < POPULATION_SIZE; i++){
+			try {
+				nextPopulation.add(createOffspring(population));
+			} catch (Exception e) {
+				System.err.println("Error creating an offspring");
+				e.printStackTrace();
+			}
+		}
+		
+		return nextPopulation;
+	}
+	
+	private static Individual createOffspring(ArrayList<Individual> population) throws Exception {
+		Individual newIndividual;
+		
+		Random rand = new Random();
+		int chooseGeneticOperator = rand.nextInt(100);
+
+		if(chooseGeneticOperator < CROSSOVER_PERCENT){
+			//Crossover
+			Individual parent1 = tournamentSelection(population);
+			Individual parent2 = tournamentSelection(population);
+			newIndividual = crossover(parent1, parent2.randomSubTree());
+		}
+		else if(chooseGeneticOperator < CROSSOVER_PERCENT + MUTATION_PERCENT){
+			//Mutation
+			Individual parent = tournamentSelection(population);
+			newIndividual = mutation(parent);
+		}
+		else {
+			//Clone
+			Individual parent = tournamentSelection(population);
+			newIndividual = new Individual(parent);
+		}
+		
+		return newIndividual;
+	}
+
+
+	private static Individual tournamentSelection(ArrayList<Individual> population) {
+		Random rand = new Random();
+		
+		Individual selection = population.get(rand.nextInt(POPULATION_SIZE));
+		
+		for(int i = 0; i < TOURNAMENT_SIZE - 1; i++){
+			Individual competitor = population.get(rand.nextInt(POPULATION_SIZE));
+			if(competitor.cost < selection.cost){
+				selection = competitor;
+			}
+		}
+		
+		return selection;
+	}
+
+
 	private static Individual crossover(Individual T1, Join S2) throws Exception{
 		//Create first individual
 		ArrayList<Join> nodelist1 = createNodeList(T1.postorder(), S2.pOrder());
@@ -21,25 +103,25 @@ public class Simulator {
 		final int MUT_PROB_3 = 20;
 		final int MUT_PROB_4 = 25;
 		
-		Individual return1 = new Individual(T);
+		Individual mutatedT = new Individual(T);
 		
 		Random rand = new Random();
 		int chooseMutation = rand.nextInt(100);
 		if(chooseMutation < MUT_PROB_1){
-			T.mutationOperator1();
+			mutatedT.mutationOperator1();
 		}
 		else if(chooseMutation < MUT_PROB_1 + MUT_PROB_2){
-			T.mutationOperator2();
+			mutatedT.mutationOperator2();
 		}
 		else if(chooseMutation < MUT_PROB_1 + MUT_PROB_2 + MUT_PROB_3){
-			T.mutationOperator3();
+			mutatedT.mutationOperator3();
 		}
-		else {
-			T.mutationOperator4();
+		else if(chooseMutation < MUT_PROB_1 + MUT_PROB_2 + MUT_PROB_3 + MUT_PROB_4){
+			mutatedT.mutationOperator4();
 		}
 		
-		return1.calcCost();
-		return return1;
+		mutatedT.calcCost();
+		return mutatedT;
 	}
 	
 	private static ArrayList<Join> createNodeList(ArrayList<Join> postOrderT, ArrayList<Join> postOrderS){
@@ -81,156 +163,13 @@ public class Simulator {
 		}
 		return TSet;
 	}
+	
 
-	public static void main(String[] args) {
-
-		/*
-		Join g1 = new Join();
-		Join g2 = new Join();
-		Join g3 = new Join();
-		Join g4 = new Join();
-		
-		g1.joinId = 1;
-		g2.joinId = 2;
-		g3.joinId = 3;
-		g4.joinId = 4;
-		
-		g1.inner = g2;
-		g1.outer = g4;
-		g2.outer = g3;
-		
-		Relation r1 = new Relation();
-		Relation r2 = new Relation();
-		Relation r3 = new Relation();
-		Relation r4 = new Relation();
-		Relation r5 = new Relation();
-		
-		r1.relationId = 1;
-		r2.relationId = 2;
-		r3.relationId = 3;
-		r4.relationId = 4;
-		r5.relationId = 5;
-		
-		g2.inner = r1;
-		g3.inner = r2;
-		g3.outer = r3;
-		g4.inner = r4;
-		g4.outer = r5;
-		
-		g1.leftRelation = r2;
-		g1.rightRelation = r4;
-		g2.leftRelation = r1;
-		g2.rightRelation = r3;
-		g3.leftRelation = r2;
-		g3.rightRelation = r3;
-		g4.leftRelation = r4;
-		g4.rightRelation = r5;
-		
-		
-		Individual ind = new Individual();
-		
-		ind.root = g1;
-		
-		ArrayList<Gene> leavesOfind = ind.leavesOf();
-		for(int n = 0; n < leavesOfind.size(); n++){
-			System.out.println("relation" + ((Relation)leavesOfind.get(n)).relationId);
-		}
-		
-		ArrayList<Join> nodes = ind.postorder();
-		for (Join node : nodes)
-			System.out.println(node.joinId);
-		
-		Individual newInd = null;
-		
-		try {
-			newInd = ind.gamma(nodes, leavesOfind);
-		} catch (Exception e) {
-			System.err.println(e.toString());
-		}
-		
-		System.out.println("here we are");
-		
-		
-		ArrayList<Gene> leaves2 = newInd.leavesOf();
-		for(int n = 0; n < leaves2.size(); n++){
-			System.out.println("relation" + ((Relation)leaves2.get(n)).relationId);
-		}
-		
-		ArrayList<Join> nodes2 = newInd.postorder();
-		for (Join node : nodes2)
-			System.out.println("new nodes" + node.joinId);
-			*/
-		
-		
-		
-		//Testing joinGraph
-		/*Individual ind = new Individual();
-		
-		ArrayList<JoinGraphNode> joinGraph = new ArrayList<JoinGraphNode>();
-		
-		JoinGraphNode n1 = new JoinGraphNode(15, 13, 14); 
-		JoinGraphNode n2 = new JoinGraphNode(17, 14, 16);
-		JoinGraphNode n3 = new JoinGraphNode(16, 14, 15);
-		
-		joinGraph.add(n1);
-		joinGraph.add(n2);
-		joinGraph.add(n3);
-		
-		ind.randomize(joinGraph);
-		*/
-		
-		
-		Individual indiv1 = sampleIndividual1();
-		Individual indiv2 = sampleIndividual2();
-		
-		//Try crossover here.
-		Join subtree1 = indiv1.findJoinWithId(16);
-		Join subtree2 = indiv2.findJoinWithId(18);
-		
-		Individual newIndiv1 = new Individual(indiv1.numJoins);
-		Individual newIndiv2 = new Individual(indiv1.numJoins);
-		
-		
-		
-
-		System.out.println("Printing indiv1");
-		System.out.println(indiv1);
-		
-		//System.out.println("Printing indiv2");
-		//System.out.println(indiv2);
-		
-		try {
-			newIndiv1 = crossover(indiv1, subtree2);
-			newIndiv2 = crossover(indiv2, subtree1);
-		} catch (Exception e) {
-			System.err.println("Error during crossover: " + e);
-		}
-		
-
-		System.out.println("\nPrinting newIndiv1");
-		System.out.println(newIndiv1);
-
-		//System.out.println("\nPrinting newIndiv2");
-		//System.out.println(newIndiv2);
-		
-		
-		
-		//Try out cost function
-		System.out.println("cost of indiv1 = " + indiv1.cost);
-		System.out.println("cost of indiv2 = " + indiv2.cost);
-		System.out.println("cost of newIndiv1 = " + newIndiv1.cost);
-		System.out.println("cost of newIndiv2 = " + newIndiv2.cost);
-		
-		
-		ArrayList<Individual> population = createPopulation(200);
-		
-		for(Individual i : population){
-			System.out.println(i.cost);
-		}
-		
+	private static void generationReport(int genNum, ArrayList<Individual> population) {
+		System.out.println("Report For Generation " + genNum);
 		
 	}
-	
+
 	private static ArrayList<Individual> createPopulation(int count){
 		
 		ArrayList<Individual> population = new ArrayList<Individual>();
@@ -256,7 +195,7 @@ public class Simulator {
 			joinGraph.add(new JoinGraphNode(17, 14, 16));
 			joinGraph.add(new JoinGraphNode(18, 12, 17));
 			
-			Individual individual = new Individual(joinGraph.size());
+			Individual individual = new Individual();
 			individual.randomize(joinGraph);
 			individual.calcCost();
 			population.add(individual);
@@ -265,7 +204,9 @@ public class Simulator {
 		return population;
 		
 	}
-
+	
+	//Sample Individuals
+	/*
 	private static Individual sampleIndividual1() {
 		Relation rel1Indiv1 = new Relation(1);
 		Relation rel2Indiv1 = new Relation(2);
@@ -361,7 +302,66 @@ public class Simulator {
 		
 		return indiv2;
 	}
-	
-
+	*/
 
 }
+
+
+
+//Try mutation
+/*
+Individual indA = sampleIndividual1();
+System.out.println("--indA");
+System.out.println(indA);
+
+Individual nInd = mutation(indA);
+
+System.out.println("\n--mutated indA");
+System.out.println(nInd);
+*/
+
+//Try crossover here.
+/*
+Individual indiv1 = sampleIndividual1();
+Individual indiv2 = sampleIndividual2(); 
+ 
+Join subtree1 = indiv1.findJoinWithId(16);
+Join subtree2 = indiv2.findJoinWithId(18);
+
+Individual newIndiv1 = new Individual(indiv1.numJoins);
+Individual newIndiv2 = new Individual(indiv1.numJoins);
+
+System.out.println("Printing indiv1");
+System.out.println(indiv1);
+
+System.out.println("Printing indiv2");
+System.out.println(indiv2);
+
+try {
+	newIndiv1 = crossover(indiv1, subtree2);
+	newIndiv2 = crossover(indiv2, subtree1);
+} catch (Exception e) {
+	System.err.println("Error during crossover: " + e);
+}
+
+
+System.out.println("\nPrinting newIndiv1");
+System.out.println(newIndiv1);
+
+System.out.println("\nPrinting newIndiv2");
+System.out.println(newIndiv2);
+*/
+
+//Try out cost function
+/*
+System.out.println("cost of indiv1 = " + indiv1.cost);
+System.out.println("cost of indiv2 = " + indiv2.cost);
+System.out.println("cost of newIndiv1 = " + newIndiv1.cost);
+System.out.println("cost of newIndiv2 = " + newIndiv2.cost);
+
+ArrayList<Individual> population = createPopulation(200);
+
+for(Individual i : population){
+	System.out.println(i.cost);
+}
+*/

@@ -196,9 +196,14 @@ public class Join extends Gene {
 		return size;
 	}
 	
+	public boolean isJoinLeaf() {
+		return (inner instanceof Relation) && (outer instanceof Relation);
+	}
+	
 	public String toString(){
 		return "J" + joinId;
 	}
+
 
 
 

@@ -3,13 +3,18 @@ import java.util.*;
 
 public class Individual {
 
+	private static final int NUM_JOINS = 18;
+	
 	public Join root;
 	public double cost;
-	public int numJoins;
+	//public int numJoins;
 	
 
-	public Individual(int numJoins){
-		this.numJoins = numJoins;
+	public Individual(){ }
+	
+	public Individual(Individual individual){
+		root = new Join(individual.root);
+		cost = individual.cost;
 	}
 	
 	public ArrayList<Join> postorder(){
@@ -25,18 +30,14 @@ public class Individual {
 		root.setParents(null);
 	}
 	
-	public Individual(Individual individual){
-		root = new Join(individual.root);
-		cost = individual.cost;
-		numJoins = individual.numJoins;
-	}
+
 	
 	public void calcCost(){
 		cost = root.cost()[0];
 	}
 	
 	public static Individual gamma(ArrayList<Join> nodeList, ArrayList<Gene> tSet) throws Exception{
-		Individual result = new Individual(nodeList.size());
+		Individual result = new Individual();
 		
 		for(Join join : nodeList){
 			Join newJoin = new Join(join);
@@ -83,10 +84,6 @@ public class Individual {
 			}
 		}
 		
-		return null;
-	}
-
-	public Individual clone(){
 		return null;
 	}
 	
@@ -165,7 +162,7 @@ public class Individual {
 	
 	public Join randomSubTree(){
 		Random rand = new Random();
-		int jId = rand.nextInt(numJoins) + 1;
+		int jId = rand.nextInt(NUM_JOINS) + 1;
 		return findJoinWithId(jId);
 	}
 	
@@ -188,13 +185,14 @@ public class Individual {
 		j.rightRelation = tempR;
 	}
 	
-	//This join operator randomizes an entire subtree. The subtree must contain at most half of the join nodes in the entire tree, since otherwise
-	//the operator would randomize too much.
+	//This join operator randomizes an entire subtree. The subtree must contain at most 2/3 of the join nodes in the entire tree, since otherwise
+	//the operator would randomize too much. Also, the chosen subtree must not be a join leaf.
 	public void mutationOperator3() {
+		setParents();
 		Join j = randomSubTree();
 		
-		//Find subtree that is at most half the size of the full tree.
-		while(j.subtreeSize() * 2 > numJoins){
+		//Find subtree that is at most 2/3 the size of the full tree that is not a join leaf node.
+		while((3 * j.subtreeSize() > 2 * NUM_JOINS & root.subtreeSize() > 3) || j.isJoinLeaf()){
 			j = randomSubTree();
 		}
 		
