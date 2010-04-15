@@ -5,26 +5,33 @@ import java.util.*;
 public class Simulator {
 
 	private static final int POPULATION_SIZE = 500;
-	private static final int GENERATIONS = 200;
+	private static final int GENERATIONS = 50;
 	
 	private static final int TOURNAMENT_SIZE = 7;
 	
 	private static final int CROSSOVER_PERCENT = 85;
 	private static final int MUTATION_PERCENT = 10;
 	//CLONE_PERCENT is effectively 100 - CROSSOVER_PERCENT - MUTATION_PERCENT.
+	
+	private static final boolean GENERATION_REPORT = false;
 
 	
-	public static void main(String[] args) {
-		
+	public static void main(String[] args) {		
 		ArrayList<Individual> population = createPopulation(POPULATION_SIZE);
 		
-		for(int genNum = 0; genNum < GENERATIONS; genNum++){
+		int genNum = 0;
+		
+		for(; genNum < GENERATIONS; genNum++){
 			population = createNextGeneration(population);
 			
-			generationReport(genNum, population);
+			if(GENERATION_REPORT){
+				generationReport(genNum, population);
+			}
 		}
 		
-		
+		//Remove best
+		finalReport(genNum, population);
+
 	}
 
 
@@ -166,8 +173,33 @@ public class Simulator {
 	
 
 	private static void generationReport(int genNum, ArrayList<Individual> population) {
-		System.out.println("Report For Generation " + genNum);
+		Individual bestIndividual = population.get(0);
 		
+		for(Individual ind : population){
+			if(ind.cost < bestIndividual.cost)
+				bestIndividual = ind;
+		}
+		
+		System.out.println("########## Report For Generation " + (genNum + 1) + " ##########");
+		System.out.println("The best individual is:");
+		System.out.println(bestIndividual);
+		System.out.println();
+	}
+	
+	private static Individual finalReport(int genNum, ArrayList<Individual> population) {
+		Individual bestIndividual = population.get(0);
+		
+		for(Individual ind : population){
+			if(ind.cost < bestIndividual.cost)
+				bestIndividual = ind;
+		}
+		
+		System.out.println("++++++++++ Final Report After " + genNum + " Generations ++++++++++");
+		System.out.println("The best individual is:");
+		System.out.println(bestIndividual);
+		System.out.println();
+		
+		return bestIndividual;
 	}
 
 	private static ArrayList<Individual> createPopulation(int count){

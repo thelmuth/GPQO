@@ -58,7 +58,7 @@ public abstract class Gene {
 		String str = "";
 		for(int i = 0; i < depth; i++)
 			str += "  ";
-		str += " - The children of " + this + " are " + ((Join)this).inner + " and " + ((Join)this).outer + ".\n";
+		str += " - " + this + " uses join type " + ((Join)this).joinType + " and has children " + ((Join)this).inner + " and " + ((Join)this).outer + ".\n";
 		
 		return str + ((Join)this).inner.getTreeString(depth + 1) + ((Join)this).outer.getTreeString(depth + 1);
 	}

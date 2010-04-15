@@ -13,6 +13,7 @@ public class Join extends Gene {
 	public Relation leftRelation;
 	public Relation rightRelation;
 	
+	//S = sort-merge join, B = block nested loops, H = hash join
 	public static String joinTypes = "SBH";
 	
 	public Join() {}
@@ -135,7 +136,7 @@ public class Join extends Gene {
 				break;
 			
 			default: 
-				System.out.println("Invalid join type!"); 
+				System.err.println("Invalid join type!"); 
 				break;
 		}
 		

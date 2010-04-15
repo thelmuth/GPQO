@@ -260,7 +260,10 @@ public class Individual {
 	
 
 	public String toString(){
-		return " = The root is J" + root.joinId + "\n" + root.getTreeString(0);
+		String str = " >> root is J" + root.joinId + "\n";
+		str += " >> cost = " + cost + "\n";
+		str += root.getTreeString(1);
+		return str;
 	}
 
 	

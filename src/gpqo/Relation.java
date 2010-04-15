@@ -4,7 +4,7 @@ public class Relation extends Gene {
 	//These attributes are used if this gene is a relation
 	public int relationId;
 	public int size;
-	public static int defaultSize = 10;
+	public static int defaultSize = 20;
 	
 	public Relation(){
 		this(-1, defaultSize);
