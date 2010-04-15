@@ -3,7 +3,7 @@ package gpqo;
 import java.util.*;
 
 public class Simulator {
-
+ 
 	private static final int POPULATION_SIZE = 500;
 	private static final int GENERATIONS = 50;
 	
