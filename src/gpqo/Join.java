@@ -113,7 +113,7 @@ public class Join extends Gene {
 	
 	protected double calcCost(double innerSize, double outerSize){
 		// Assuming buffer size of 1002
-		double bufferSize = 1002, cost = -1;
+		double bufferSize = 20, cost = -1;
 		
 		switch (joinType){
 			case 'S': 
@@ -129,7 +129,7 @@ public class Join extends Gene {
 				double smallerRel = Math.min(innerSize, outerSize);
 				double biggerRel = Math.max(innerSize, outerSize);
 				
-				cost = smallerRel + biggerRel * Math.ceil(smallerRel / (bufferSize - 2)); 
+				cost = smallerRel + biggerRel * Math.ceil(smallerRel / (bufferSize - 2));
 				break;
 			
 			case 'H': 

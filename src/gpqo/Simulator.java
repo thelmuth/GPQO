@@ -4,16 +4,17 @@ import java.util.*;
 
 public class Simulator {
  
-	private static final int POPULATION_SIZE = 500;
-	private static final int GENERATIONS = 50;
+	private static final int POPULATION_SIZE = 1000;
+	private static final int GENERATIONS = 100;
 	
 	private static final int TOURNAMENT_SIZE = 7;
+	private static final int GEOGRAPHY_RADIUS = 10;
 	
-	private static final int CROSSOVER_PERCENT = 85;
-	private static final int MUTATION_PERCENT = 10;
+	private static final int CROSSOVER_PERCENT = 70;
+	private static final int MUTATION_PERCENT = 25;
 	//CLONE_PERCENT is effectively 100 - CROSSOVER_PERCENT - MUTATION_PERCENT.
 	
-	private static final boolean GENERATION_REPORT = false;
+	private static final boolean GENERATION_REPORT = true;
 
 	
 	public static void main(String[] args) {		
@@ -29,7 +30,6 @@ public class Simulator {
 			}
 		}
 		
-		//Remove best
 		finalReport(genNum, population);
 
 	}
@@ -40,7 +40,7 @@ public class Simulator {
 		
 		for(int i = 0; i < POPULATION_SIZE; i++){
 			try {
-				nextPopulation.add(createOffspring(population));
+				nextPopulation.add(createOffspring(population, i));
 			} catch (Exception e) {
 				System.err.println("Error creating an offspring");
 				e.printStackTrace();
@@ -50,7 +50,7 @@ public class Simulator {
 		return nextPopulation;
 	}
 	
-	private static Individual createOffspring(ArrayList<Individual> population) throws Exception {
+	private static Individual createOffspring(ArrayList<Individual> population, int curInd) throws Exception {
 		Individual newIndividual;
 		
 		Random rand = new Random();
@@ -58,18 +58,18 @@ public class Simulator {
 
 		if(chooseGeneticOperator < CROSSOVER_PERCENT){
 			//Crossover
-			Individual parent1 = tournamentSelection(population);
-			Individual parent2 = tournamentSelection(population);
+			Individual parent1 = tournamentSelection(population, curInd);
+			Individual parent2 = tournamentSelection(population, curInd);
 			newIndividual = crossover(parent1, parent2.randomSubTree());
 		}
 		else if(chooseGeneticOperator < CROSSOVER_PERCENT + MUTATION_PERCENT){
 			//Mutation
-			Individual parent = tournamentSelection(population);
+			Individual parent = tournamentSelection(population, curInd);
 			newIndividual = mutation(parent);
 		}
 		else {
 			//Clone
-			Individual parent = tournamentSelection(population);
+			Individual parent = tournamentSelection(population, curInd);
 			newIndividual = new Individual(parent);
 		}
 		
@@ -77,19 +77,31 @@ public class Simulator {
 	}
 
 
-	private static Individual tournamentSelection(ArrayList<Individual> population) {
-		Random rand = new Random();
+	private static Individual tournamentSelection(ArrayList<Individual> population, int curInd) {
 		
-		Individual selection = population.get(rand.nextInt(POPULATION_SIZE));
+		Individual selection = population.get(getIntWithinRadius(curInd));
 		
 		for(int i = 0; i < TOURNAMENT_SIZE - 1; i++){
-			Individual competitor = population.get(rand.nextInt(POPULATION_SIZE));
+			Individual competitor = population.get(getIntWithinRadius(curInd));
 			if(competitor.cost < selection.cost){
 				selection = competitor;
 			}
 		}
 		
 		return selection;
+	}
+
+
+	private static int getIntWithinRadius(int curInd) {
+		Random rand = new Random();
+		
+		int selected = curInd + rand.nextInt(2 * GEOGRAPHY_RADIUS) - GEOGRAPHY_RADIUS;
+		if(selected < 0)
+			selected += POPULATION_SIZE;
+		if(selected >= POPULATION_SIZE)
+			selected -= POPULATION_SIZE;
+		
+		return selected;
 	}
 
 
@@ -215,6 +227,26 @@ public class Simulator {
 			int size = generator.nextInt(maxSize - minSize) + minSize;
 			relSizes[relInd] = size;
 		}
+		
+		relSizes[1] = 200;
+		relSizes[2] = 50;
+		relSizes[3] = 1000;
+		relSizes[4] = 1300;
+		relSizes[5] = 8;
+		relSizes[6] = 1270;
+		relSizes[7] = 520;
+		relSizes[8] = 31;
+		relSizes[9] = 9;
+		relSizes[10] = 500;
+		relSizes[11] = 6;
+		relSizes[12] = 10;
+		relSizes[13] = 1100;
+		relSizes[14] = 5;
+		relSizes[15] = 100;
+		relSizes[16] = 1200;
+		relSizes[17] = 290;
+		relSizes[18] = 65;
+		
 		
 		while(count-- > 0){
 			ArrayList<JoinGraphNode> joinGraph = new ArrayList<JoinGraphNode>();
