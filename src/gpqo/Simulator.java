@@ -204,28 +204,38 @@ public class Simulator {
 
 	private static ArrayList<Individual> createPopulation(int count){
 		
+		int maxSize = 1000;
+		int minSize = 10;
 		ArrayList<Individual> population = new ArrayList<Individual>();
+		Random generator = new Random();
+		
+		int[] relSizes = new int[count + 1];
+		for (int relInd = 1; relInd < count + 1; ++relInd){
+			// The line below will generate sizes between minSize and maxSize
+			int size = generator.nextInt(maxSize - minSize) + minSize;
+			relSizes[relInd] = size;
+		}
 		
 		while(count-- > 0){
 			ArrayList<JoinGraphNode> joinGraph = new ArrayList<JoinGraphNode>();
-			joinGraph.add(new JoinGraphNode(1, 1, 5));
-			joinGraph.add(new JoinGraphNode(2, 3, 2));
-			joinGraph.add(new JoinGraphNode(3, 4, 3));
-			joinGraph.add(new JoinGraphNode(4, 4, 5));
-			joinGraph.add(new JoinGraphNode(5, 5, 6));
-			joinGraph.add(new JoinGraphNode(6, 6, 7));
-			joinGraph.add(new JoinGraphNode(7, 7, 8));
-			joinGraph.add(new JoinGraphNode(8, 8, 9));
-			joinGraph.add(new JoinGraphNode(9, 9, 10));
-			joinGraph.add(new JoinGraphNode(10, 10, 18));
-			joinGraph.add(new JoinGraphNode(11, 10, 19));
-			joinGraph.add(new JoinGraphNode(12, 8,  11));
-			joinGraph.add(new JoinGraphNode(13, 11, 12));
-			joinGraph.add(new JoinGraphNode(14, 12, 13));
-			joinGraph.add(new JoinGraphNode(15, 13, 14));
-			joinGraph.add(new JoinGraphNode(16, 14, 15));
-			joinGraph.add(new JoinGraphNode(17, 14, 16));
-			joinGraph.add(new JoinGraphNode(18, 12, 17));
+			joinGraph.add(new JoinGraphNode(1, 1, 5, relSizes[1], relSizes[5]));
+			joinGraph.add(new JoinGraphNode(2, 3, 2, relSizes[3], relSizes[2]));
+			joinGraph.add(new JoinGraphNode(3, 4, 3, relSizes[4], relSizes[3]));
+			joinGraph.add(new JoinGraphNode(4, 4, 5, relSizes[4], relSizes[5]));
+			joinGraph.add(new JoinGraphNode(5, 5, 6, relSizes[5], relSizes[6]));
+			joinGraph.add(new JoinGraphNode(6, 6, 7, relSizes[6], relSizes[7]));
+			joinGraph.add(new JoinGraphNode(7, 7, 8, relSizes[7], relSizes[8]));
+			joinGraph.add(new JoinGraphNode(8, 8, 9, relSizes[8], relSizes[9]));
+			joinGraph.add(new JoinGraphNode(9, 9, 10, relSizes[9], relSizes[10]));
+			joinGraph.add(new JoinGraphNode(10, 10, 18, relSizes[10], relSizes[18]));
+			joinGraph.add(new JoinGraphNode(11, 10, 19, relSizes[10], relSizes[19]));
+			joinGraph.add(new JoinGraphNode(12, 8,  11, relSizes[8], relSizes[11]));
+			joinGraph.add(new JoinGraphNode(13, 11, 12, relSizes[11], relSizes[12]));
+			joinGraph.add(new JoinGraphNode(14, 12, 13, relSizes[12], relSizes[13]));
+			joinGraph.add(new JoinGraphNode(15, 13, 14, relSizes[13], relSizes[14]));
+			joinGraph.add(new JoinGraphNode(16, 14, 15, relSizes[14], relSizes[15]));
+			joinGraph.add(new JoinGraphNode(17, 14, 16, relSizes[14], relSizes[16]));
+			joinGraph.add(new JoinGraphNode(18, 12, 17, relSizes[12], relSizes[17]));
 			
 			Individual individual = new Individual();
 			individual.randomize(joinGraph);
