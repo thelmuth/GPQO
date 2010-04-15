@@ -106,18 +106,20 @@ public class Individual {
 		
 		Gene inner = null;
 		if (joinGraphNodeListInner.size() == 0)
-			inner = new Relation(joinGraphNode.innerRelInd);
+			inner = new Relation(joinGraphNode.innerRelInd, joinGraphNode.innerSize);
 		else
 			inner = createRandomIndividual(joinGraphNodeListInner);
 		
 		Gene outer = null;
 		if (joinGraphNodeListOuter.size() == 0)
-			outer = new Relation(joinGraphNode.outerRelInd);
+			outer = new Relation(joinGraphNode.outerRelInd, joinGraphNode.outerSize);
 		else
 			outer = createRandomIndividual(joinGraphNodeListOuter);
 
-		Join join = new Join(joinGraphNode.joinInd, new Relation(joinGraphNode.innerRelInd), 
-				new Relation(joinGraphNode.outerRelInd), inner, outer);
+		Join join = new Join(joinGraphNode.joinInd, 
+				new Relation(joinGraphNode.innerRelInd, joinGraphNode.innerSize), 
+				new Relation(joinGraphNode.outerRelInd, joinGraphNode.outerSize), 
+				inner, outer);
 		
 		inner.parent = join;
 		outer.parent = join;

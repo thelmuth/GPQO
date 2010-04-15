@@ -4,11 +4,16 @@ public class JoinGraphNode {
 	public int joinInd;
 	public int innerRelInd;
 	public int outerRelInd;
+	public int innerSize;
+	public int outerSize;
 	
-	public JoinGraphNode(int joinInd, int innerRelInd, int outerRelInd){
+	public JoinGraphNode(int joinInd, int innerRelInd, int outerRelInd,
+			int innerSize, int outerSize){
 		this.joinInd = joinInd;
 		this.innerRelInd = innerRelInd;
 		this.outerRelInd = outerRelInd;
+		this.innerSize = innerSize;
+		this.outerSize = outerSize;
 	}
 	
 	public boolean containsRel(int relIndex){

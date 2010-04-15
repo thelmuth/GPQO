@@ -65,7 +65,8 @@ public class Join extends Gene {
 	public ArrayList<JoinGraphNode> getJoinGraph() {
 		ArrayList<JoinGraphNode> graph = new ArrayList<JoinGraphNode>();
 		
-		graph.add(new JoinGraphNode(joinId, leftRelation.relationId, rightRelation.relationId));
+		graph.add(new JoinGraphNode(joinId, leftRelation.relationId, 
+				rightRelation.relationId, leftRelation.size, rightRelation.size));
 		
 		if(inner instanceof Join){
 			graph.addAll(((Join)inner).getJoinGraph());
