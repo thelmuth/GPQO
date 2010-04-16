@@ -1,4 +1,4 @@
 Genetic Programming Query Optimizer
 ===================================
 
-More coming soon...
+More coming soon... maybe?
