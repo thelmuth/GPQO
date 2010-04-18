@@ -55,36 +55,38 @@ public abstract class Gene {
 		if(this instanceof Relation)
 			return "";
 		
+		Join thisJoin = (Join)this;
+		
+		boolean INLJoinInner = false, INLJoinOuter = false;
+		
+		if(thisJoin.inner instanceof Relation){
+			INLJoinInner = ((Relation)thisJoin.inner).clustIndAttrib == thisJoin.joinAttribute;
+		}
+		if(thisJoin.outer instanceof Relation){
+			INLJoinOuter = ((Relation)thisJoin.outer).clustIndAttrib == thisJoin.joinAttribute;
+		}
+		
+		
 		String str = "";
 		for(int i = 0; i < depth; i++)
 			str += "  ";
-		str += " - " + this + " uses join type " + ((Join)this).joinType + " and has children " + ((Join)this).inner + " and " + ((Join)this).outer + ".\n";
+		str += " - " + this + " uses join type ";
 		
-		return str + ((Join)this).inner.getTreeString(depth + 1) + ((Join)this).outer.getTreeString(depth + 1);
+		if(thisJoin.joinType == 'I'){
+			if(INLJoinInner || INLJoinOuter)
+				str += 'I';
+			else
+				str += 'B';			
+		}
+		else {
+			str += thisJoin.joinType;
+		}
+
+		str += " and has children " + thisJoin.inner + " and " + thisJoin.outer + ".\n";
+		
+		return str + thisJoin.inner.getTreeString(depth + 1) + thisJoin.outer.getTreeString(depth + 1);
 	}
 	
-	
-	/*
-	// This version prints the tree in rightchild-parent-leftchild order, to produce a tree-like picture
-	public String getTreeString(int depth) {
-		if(this instanceof Relation)
-			return "";
-		
-		String str = "";
-		
-		str += ((Join)this).outer.getTreeString(depth + 1);
-		
-		for(int i = 0; i < depth; i++)
-			str += "     ";
-		//str += " - The children of " + this + " are " + ((Join)this).inner + " and " + ((Join)this).outer + ".\n";
-		
-		str += " -" + this + "\n";
-		
-		str += ((Join)this).inner.getTreeString(depth + 1);
-		
-		return str;
-	}
-	*/
 	
 	abstract public String toString();
 	

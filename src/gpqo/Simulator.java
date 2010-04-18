@@ -4,7 +4,7 @@ import java.util.*;
 public class Simulator {
  
 	private static final int POPULATION_SIZE = 1000;
-	private static final int GENERATIONS = 300;
+	private static final int GENERATIONS = 100;
 	
 	private static final int TOURNAMENT_SIZE = 7;
 	private static final int GEOGRAPHY_RADIUS = 10;
