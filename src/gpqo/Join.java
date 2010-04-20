@@ -162,22 +162,27 @@ public class Join extends Gene {
 		double ratioNtoBOuter = Math.ceil(outerSize / bufferSize);
 		double innerCost = 0, outerCost = 0;
 		
-		if (innerType != 'R') innerCost = innerSize; // Cost of writing
-		if (outerType != 'R') outerCost = outerSize; // Cost of writing
-		
 		// if the inner is a relation and has a clustered index or is a sort-merge join => ignore sorting
 		// otherwise, the cost is equal to the cost of writing (need to get all the output) + sorting
 		if ((innerType == 'R' && ((Relation)inner).clustIndAttrib != this.joinAttribute) ||
-				innerType == 'B' || innerType == 'H' ||
-				(innerType == 'S' && ((Join)inner).joinAttribute != this.joinAttribute))
-			innerCost += innerSize + 2 * innerSize * (Math.ceil(Math.log(ratioNtoBInner) / Math.log(bufferSize - 1)) + 1);
-			
+				innerType == 'B' || innerType == 'H' || innerType == 'I' ||
+				(innerType == 'S' && ((Join)inner).joinAttribute != this.joinAttribute)){
+			innerCost += 2 * innerSize * (Math.ceil(Math.log(ratioNtoBInner) / Math.log(bufferSize - 1)) + 1);
+		
+			if(innerType != 'R')
+				innerCost += innerSize; //Cost of writing inner
+		}
+		
 		// if the outer is a relation (has clustered index) or a sort-merge join => ignore sorting
 		// otherwise, the cost is equal to the cost of writing (need to get all the output) + sorting
 		if ((outerType == 'R' && ((Relation)outer).clustIndAttrib != this.joinAttribute) ||
-				outerType == 'B' || outerType == 'H' ||
-				(outerType == 'S' && ((Join)outer).joinAttribute != this.joinAttribute))
-			outerCost += outerSize + 2 * outerSize * (Math.ceil(Math.log(ratioNtoBOuter) / Math.log(bufferSize - 1)) + 1);
+				outerType == 'B' || outerType == 'H' || outerType == 'I' ||
+				(outerType == 'S' && ((Join)outer).joinAttribute != this.joinAttribute)){
+			outerCost += 2 * outerSize * (Math.ceil(Math.log(ratioNtoBOuter) / Math.log(bufferSize - 1)) + 1);
+			
+			if(outerType != 'R')
+				outerCost += outerSize; //Cost of writing outer
+		}
 		
 		// Total cost = (cost of sorting if necessary) + (cost of merging)
 		return (innerCost + outerCost) + (innerSize + outerSize);
