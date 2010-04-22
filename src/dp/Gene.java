@@ -51,6 +51,17 @@ public abstract class Gene {
 		}
 	}
 	
+	public Relation joinsWith(HashMap<Integer, HashSet<Integer>> h, Relation r){
+		ArrayList<Gene> leaves = leavesOf();
+
+		for (Gene g : leaves) {
+			if(h.get(r).contains(((Relation) g).relationId)){
+				return (Relation) g;
+			}
+		}
+		return null;
+	}
+	
 	public String getTreeString(int depth) {
 		if(this instanceof Relation)
 			return "";
