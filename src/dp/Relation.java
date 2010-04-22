@@ -1,9 +1,9 @@
-package gpqo;
+package dp;
 
 public class Relation extends Gene {
 	//These attributes are used if this gene is a relation
 	public int relationId;
-	public int size;
+	public int size; //For DP, this is also the cost
 	
 	public static int defaultSize = 20;
 	public static int defaultNumTuples = 20;
