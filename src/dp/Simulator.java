@@ -30,9 +30,33 @@ public class Simulator {
 		}
 		
 		finalReport(genNum, population);
+		
+		keepBestPartialSolutions(null);////argh
 
 	}
 
+	
+	
+	private static ArrayList<Gene> keepBestPartialSolutions(
+			ArrayList<Gene> partialSolutions) {
+		
+		ArrayList<Gene> bestPartialSolutions = new ArrayList<Gene>();
+		HashMap<Integer, ArrayList<Gene>> eqClasses = new HashMap<Integer, ArrayList<Gene>>();
+		
+		for(Gene g : partialSolutions){
+			int hashValue = g.hashRelationIds();
+			if (!eqClasses.containsKey(hashValue))
+				eqClasses.put(hashValue, new ArrayList<Gene>());
+			
+			eqClasses.get(hashValue).add(g);
+		}
+		
+		///Hash table is done, remove solutions HERE!!!!
+		
+		
+		
+		return bestPartialSolutions;
+	}
 
 	private static ArrayList<Individual> createNextGeneration(ArrayList<Individual> population) {
 		ArrayList<Individual> nextPopulation = new ArrayList<Individual>();

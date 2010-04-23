@@ -62,6 +62,17 @@ public abstract class Gene {
 		return null;
 	}
 	
+	public int hashRelationIds(){
+		int value = 0;
+		
+		ArrayList<Gene> leaves = leavesOf();
+		for(Gene r : leaves){
+			value += Math.round(Math.pow(2, ((Relation)r).relationId));
+		}
+		
+		return value;
+	}
+	
 	public String getTreeString(int depth) {
 		if(this instanceof Relation)
 			return "";
