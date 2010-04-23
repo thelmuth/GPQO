@@ -62,12 +62,20 @@ public abstract class Gene {
 		return null;
 	}
 	
-	public int hashRelationIds(){
+	public int hashRelationIds(int largestRelationId){
 		int value = 0;
 		
 		ArrayList<Gene> leaves = leavesOf();
 		for(Gene r : leaves){
 			value += Math.round(Math.pow(2, ((Relation)r).relationId));
+		}
+		
+		if(this instanceof Join){
+			if(((Join)this).joinType == 'S'){
+				//Join is sorted, so hash on the attribute as well.
+				int attribute = ((Join)this).joinAttribute;
+				value += Math.round(Math.pow(2, largestRelationId + attribute));
+			}
 		}
 		
 		return value;

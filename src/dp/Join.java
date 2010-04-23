@@ -83,6 +83,10 @@ public class Join extends Gene {
 		return graph;
 	}
 	
+	public double justCost(){
+		return (this.cost())[0];
+	}
+	
 	public double[] cost(){
 		
 		double innerCost = 0, innerSize = 0, outerCost = 0, outerSize = 0;

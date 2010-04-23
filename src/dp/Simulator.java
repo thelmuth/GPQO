@@ -2,6 +2,9 @@ package dp;
 import java.util.*;
 
 public class Simulator {
+	
+	private static final int NUMBER_RELATIONS = 19;
+	
  
 	private static final int POPULATION_SIZE = 1000;
 	private static final int GENERATIONS = 100;
@@ -44,16 +47,28 @@ public class Simulator {
 		HashMap<Integer, ArrayList<Gene>> eqClasses = new HashMap<Integer, ArrayList<Gene>>();
 		
 		for(Gene g : partialSolutions){
-			int hashValue = g.hashRelationIds();
+			int hashValue = g.hashRelationIds(NUMBER_RELATIONS);
 			if (!eqClasses.containsKey(hashValue))
 				eqClasses.put(hashValue, new ArrayList<Gene>());
 			
 			eqClasses.get(hashValue).add(g);
 		}
 		
-		///Hash table is done, remove solutions HERE!!!!
-		
-		
+		// Hash table is done, remove suboptimal solutions
+		for(ArrayList<Gene> eqClass : eqClasses.values()){
+			Gene bestPartial = eqClass.get(0);
+			double bestCost = ((Join)bestPartial).justCost();
+			
+			for(Gene partial : eqClass){
+				double partialCost = ((Join)partial).justCost();
+				if(partialCost < bestCost){
+					bestCost = partialCost;
+					bestPartial = partial;
+				}
+			}
+			
+			bestPartialSolutions.add(bestPartial);
+		}
 		
 		return bestPartialSolutions;
 	}
