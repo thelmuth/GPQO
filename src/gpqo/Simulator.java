@@ -1,6 +1,7 @@
 package gpqo;
 import java.util.*;
 
+
 public class Simulator {
  
 	private static final int POPULATION_SIZE = 1000;
@@ -17,7 +18,7 @@ public class Simulator {
 
 	
 	public static void main(String[] args) {		
-		ArrayList<Individual> population = createPopulation(POPULATION_SIZE);
+		ArrayList<Individual> population = createPopulation2(POPULATION_SIZE);
 		
 		int genNum = 0;
 		
@@ -216,18 +217,12 @@ public class Simulator {
 
 	private static ArrayList<Individual> createPopulation(int count){
 		
-		int maxSize = 1000, minSize = 10;
 		int numRelations = 19, numJoins = 18;
 		
 		ArrayList<Individual> population = new ArrayList<Individual>();
-		Random generator = new Random();
 		
 		int[] relSizes = new int[numRelations + 1];
-		for (int relInd = 1; relInd < numRelations + 1; ++relInd){
-			// The line below will generate sizes between minSize and maxSize
-			int size = generator.nextInt(maxSize - minSize) + minSize;
-			relSizes[relInd] = size;
-		}
+
 		int[] clustIndAttrib = new int[numRelations + 1];
 		int[] clustIndCard = new int[numRelations + 1];
 		int[] joinAttrib = new int[numJoins + 1];
@@ -251,9 +246,10 @@ public class Simulator {
 		relSizes[17] = 290;		clustIndAttrib[17] = 5;		clustIndCard[17] = 70; 	joinAttrib[17] = 2;
 		relSizes[18] = 65;		clustIndAttrib[18] = 3;		clustIndCard[18] = 90; 	joinAttrib[18] = 5;
 		relSizes[19] = 90;		clustIndAttrib[19] = 2; 	clustIndCard[19] = 10; 
-		
+	
 		
 		while(count-- > 0){
+	
 			ArrayList<JoinGraphNode> joinGraph = new ArrayList<JoinGraphNode>();
 			joinGraph.add(new JoinGraphNode(1, 1, 5, relSizes[1], relSizes[5],
 					clustIndAttrib[1], clustIndAttrib[5], joinAttrib[1],
@@ -336,6 +332,95 @@ public class Simulator {
 		return population;
 		
 	}
+	
+	private static ArrayList<Individual> createPopulation2(int count){
+
+		int numRelations = 13, numJoins = 12;
+		
+		ArrayList<Individual> population = new ArrayList<Individual>();
+		
+		int[] relSizes = new int[numRelations + 1];
+
+		int[] clustIndAttrib = new int[numRelations + 1];
+		int[] clustIndCard = new int[numRelations + 1];
+		int[] joinAttrib = new int[numJoins + 1];
+		
+		relSizes[1] = 4500;		clustIndAttrib[1] = 2;	clustIndCard[1] = 15;         joinAttrib[1] = 2;
+        relSizes[2] = 8;		clustIndAttrib[2] = 2;  clustIndCard[2] = 30;         joinAttrib[2] = 4;
+        relSizes[3] = 700;      clustIndAttrib[3] = 4;  clustIndCard[3] = 45;         joinAttrib[3] = 1;
+        relSizes[4] = 3;        clustIndAttrib[4] = 1;  clustIndCard[4] = 10;         joinAttrib[4] = 1;
+        relSizes[5] = 90;       clustIndAttrib[5] = 3;  clustIndCard[5] = 75;         joinAttrib[5] = 3;
+        relSizes[6] = 2300;     clustIndAttrib[6] = 3;  clustIndCard[6] = 40;         joinAttrib[6] = 1;
+        relSizes[7] = 900;      clustIndAttrib[7] = 1;  clustIndCard[7] = 30;         joinAttrib[7] = 1;
+        relSizes[8] = 300;      clustIndAttrib[8] = 1;  clustIndCard[8] = 15;         joinAttrib[8] = 1;
+        relSizes[9] = 40;       clustIndAttrib[9] = 2;  clustIndCard[9] = 40;         joinAttrib[9] = 2;
+        relSizes[10] = 70;      clustIndAttrib[10] = 4; clustIndCard[10] = 75;        joinAttrib[10] = 2;
+        relSizes[11] = 8;       clustIndAttrib[11] = 2; clustIndCard[11] = 60;        joinAttrib[11] = 4;
+        relSizes[12] = 3000;    clustIndAttrib[12] = 1; clustIndCard[12] = 35;        joinAttrib[12] = 4;
+        relSizes[13] = 30;      clustIndAttrib[13] = 4; clustIndCard[13] = 60;         
+       
+		
+		while(count-- > 0){
+
+			ArrayList<JoinGraphNode> joinGraph = new ArrayList<JoinGraphNode>();
+			joinGraph.add(new JoinGraphNode(1, 1, 2, relSizes[1], relSizes[2],
+					clustIndAttrib[1], clustIndAttrib[2], joinAttrib[1],
+					clustIndCard[1], clustIndCard[2]));
+
+			joinGraph.add(new JoinGraphNode(2, 1, 3, relSizes[1], relSizes[3],
+					clustIndAttrib[1], clustIndAttrib[3], joinAttrib[2],
+					clustIndCard[1], clustIndCard[3]));
+
+			joinGraph.add(new JoinGraphNode(3, 3, 4, relSizes[3], relSizes[4],
+					clustIndAttrib[3], clustIndAttrib[4], joinAttrib[3],
+					clustIndCard[3], clustIndCard[4]));
+
+			joinGraph.add(new JoinGraphNode(4, 3, 5, relSizes[3], relSizes[5],
+					clustIndAttrib[3], clustIndAttrib[5], joinAttrib[4],
+					clustIndCard[3], clustIndCard[5]));
+
+			joinGraph.add(new JoinGraphNode(5, 3, 6, relSizes[3], relSizes[6],
+					clustIndAttrib[3], clustIndAttrib[6], joinAttrib[5],
+					clustIndCard[3], clustIndCard[6]));
+
+			joinGraph.add(new JoinGraphNode(6, 6, 7, relSizes[6], relSizes[7],
+					clustIndAttrib[6], clustIndAttrib[7], joinAttrib[6],
+					clustIndCard[6], clustIndCard[7]));
+
+			joinGraph.add(new JoinGraphNode(7, 7, 8, relSizes[7], relSizes[8],
+					clustIndAttrib[7], clustIndAttrib[8], joinAttrib[7],
+					clustIndCard[7], clustIndCard[8]));
+
+			joinGraph.add(new JoinGraphNode(8, 8, 9, relSizes[8], relSizes[9],
+					clustIndAttrib[8], clustIndAttrib[9], joinAttrib[8],
+					clustIndCard[8], clustIndCard[9]));
+
+			joinGraph.add(new JoinGraphNode(9, 5, 10, relSizes[5], relSizes[10],
+					clustIndAttrib[5], clustIndAttrib[10], joinAttrib[9],
+					clustIndCard[5], clustIndCard[10]));
+
+			joinGraph.add(new JoinGraphNode(10, 4, 11, relSizes[4], relSizes[11],
+					clustIndAttrib[4], clustIndAttrib[11], joinAttrib[10],
+					clustIndCard[4], clustIndCard[11]));
+
+			joinGraph.add(new JoinGraphNode(11, 4, 12, relSizes[4], relSizes[12],
+					clustIndAttrib[4], clustIndAttrib[12], joinAttrib[11],
+					clustIndCard[4], clustIndCard[12]));
+
+			joinGraph.add(new JoinGraphNode(12, 8, 13, relSizes[8], relSizes[13],
+					clustIndAttrib[8], clustIndAttrib[13], joinAttrib[12],
+					clustIndCard[8], clustIndCard[13]));
+			
+			Individual individual = new Individual();
+			individual.randomize(joinGraph);
+			individual.calcCost();
+			population.add(individual);
+		}
+		
+		return population;
+		
+	}
+	
 	
 	//Sample Individuals
 	/*

@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Individual {
 
-	private static final int NUM_JOINS = 18;
+	private static final int NUM_JOINS = 12;
 	
 	public Join root;
 	public double cost;
@@ -87,8 +87,8 @@ public class Individual {
 		return null;
 	}
 	
-	public void randomize(ArrayList<JoinGraphNode> data){
-		root = createRandomIndividual(data);
+	public void randomize(ArrayList<JoinGraphNode> joinGraph){
+		root = createRandomIndividual(joinGraph);
 	}
 	
 	public Join createRandomIndividual(ArrayList<JoinGraphNode> data){
@@ -267,7 +267,7 @@ public class Individual {
 
 	public String toString(){
 		String str = " >> root is J" + root.joinId + "\n";
-		str += " >> cost = " + (long)cost + "\n";
+		str += " >> cost = " + cost + "\n";
 		str += root.getTreeString(1);
 		return str;
 	}

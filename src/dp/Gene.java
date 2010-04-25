@@ -55,7 +55,7 @@ public abstract class Gene {
 		ArrayList<Gene> leaves = leavesOf();
 
 		for (Gene g : leaves) {
-			if(h.get(r).contains(((Relation) g).relationId)){
+			if(h.get(r.relationId).contains(((Relation) g).relationId)){
 				return (Relation) g;
 			}
 		}
@@ -115,6 +115,20 @@ public abstract class Gene {
 		str += " and has children " + thisJoin.inner + " and " + thisJoin.outer + ".\n";
 		
 		return str + thisJoin.inner.getTreeString(depth + 1) + thisJoin.outer.getTreeString(depth + 1);
+	}
+	
+	public String stringify(){
+		String str = "cost = " + ((Join)this).justCost() + "\n";
+		if(((Join)this).joinType == 'S'){
+			str += "Sorted on " + ((Join)this).joinAttribute + " attribute\n";
+		}
+		else{
+			str += "Not sorted\n";
+		}
+		
+		str += getTreeString(0);
+		
+		return str;
 	}
 	
 	
