@@ -30,8 +30,6 @@ public class Individual {
 		root.setParents(null);
 	}
 	
-
-	
 	public void calcCost(){
 		cost = root.cost()[0];
 	}

@@ -13,6 +13,8 @@ public class Join extends Gene {
 	public Relation leftRelation;
 	public Relation rightRelation;
 	
+	public double cost;
+	
 	//S = sort-merge join, B = block nested loops, H = hash join, I = index nested
 	public static String joinTypes = "SBHI";
 	
@@ -54,6 +56,22 @@ public class Join extends Gene {
 		int randomIndex = generator.nextInt(joinTypes.length());
 		
 		this.joinType = joinTypes.charAt(randomIndex);
+		
+		this.leftRelation = leftRelation;
+		this.rightRelation = rightRelation;
+		
+		this.inner = inner;
+		this.outer = outer;
+		
+		this.joinAttribute = joinAttribute;
+	}
+	
+	public Join(int joinId, Relation leftRelation, Relation rightRelation, Gene inner, Gene outer,
+			int joinAttribute, char joinType){
+		
+		this.joinId = joinId;
+		
+		this.joinType = joinType;
 		
 		this.leftRelation = leftRelation;
 		this.rightRelation = rightRelation;
@@ -125,6 +143,10 @@ public class Join extends Gene {
 		returnCostAndSize[1] = Math.ceil(innerSize * outerSize / reductionFactor); 
 		
 		return returnCostAndSize;
+	}
+	
+	protected void setCost(){
+		cost = cost()[0];
 	}
 	
 	protected double calcCost(double innerSize, double outerSize, char innerType, char outerType){
