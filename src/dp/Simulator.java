@@ -248,6 +248,7 @@ public class Simulator {
 	}
 
 	
+	@SuppressWarnings("unused")
 	private static int getRepresentation(
 			HashMap<Integer, HashSet<Integer>> relation2Neighbors,
 			ArrayList<Gene> partialSolutions, ArrayList<Relation> relations,

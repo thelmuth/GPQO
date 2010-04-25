@@ -215,6 +215,7 @@ public class Simulator {
 		return bestIndividual;
 	}
 
+	@SuppressWarnings("unused")
 	private static ArrayList<Individual> createPopulation(int count){
 		
 		int numRelations = 19, numJoins = 18;
