@@ -63,6 +63,22 @@ public class Join extends Gene {
 		
 		this.joinAttribute = joinAttribute;
 	}
+	
+	public Join(int joinId, Relation leftRelation, Relation rightRelation, Gene inner, Gene outer,
+			int joinAttribute, char joinType){
+		
+		this.joinId = joinId;
+		
+		this.joinType = joinType;
+		
+		this.leftRelation = leftRelation;
+		this.rightRelation = rightRelation;
+		
+		this.inner = inner;
+		this.outer = outer;
+		
+		this.joinAttribute = joinAttribute;
+	}
 
 
 	public ArrayList<JoinGraphNode> getJoinGraph() {
