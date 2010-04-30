@@ -4,8 +4,8 @@ import java.util.*;
 
 public class Simulator {
  
-	private static final int POPULATION_SIZE = 1000;
-	private static final int GENERATIONS = 100;
+	private static final int POPULATION_SIZE = 100;
+	private static final int GENERATIONS = 50;
 	
 	private static final int TOURNAMENT_SIZE = 7;
 	private static final int GEOGRAPHY_RADIUS = 10;
@@ -17,7 +17,10 @@ public class Simulator {
 	private static final boolean GENERATION_REPORT = true;
 
 	
-	public static void main(String[] args) {		
+	public static void main(String[] args) {
+		
+		long startTime = System.currentTimeMillis();
+		
 		ArrayList<Individual> population = createPopulation2(POPULATION_SIZE);
 		
 		int genNum = 0;
@@ -30,7 +33,7 @@ public class Simulator {
 			}
 		}
 		
-		finalReport(genNum, population);
+		finalReport(genNum, population, startTime);
 
 	}
 
@@ -199,7 +202,7 @@ public class Simulator {
 		System.out.println();
 	}
 	
-	private static Individual finalReport(int genNum, ArrayList<Individual> population) {
+	private static Individual finalReport(int genNum, ArrayList<Individual> population, long startTime) {
 		Individual bestIndividual = population.get(0);
 		
 		for(Individual ind : population){
@@ -207,10 +210,12 @@ public class Simulator {
 				bestIndividual = ind;
 		}
 		
+		long runTime = System.currentTimeMillis() - startTime;
+		
 		System.out.println("++++++++++ Final Report After " + genNum + " Generations ++++++++++");
+		System.out.println("The run took " + runTime + " milliseconds.");
 		System.out.println("The best individual is:");
 		System.out.println(bestIndividual);
-		System.out.println();
 		
 		return bestIndividual;
 	}

@@ -7,6 +7,8 @@ public class Simulator {
 	private static final int NUMBER_RELATIONS = 13;
 
 	public static void main(String[] args) {
+		
+		long startTime = System.currentTimeMillis();
 
 		HashMap<Integer, HashSet<Integer>> relation2Neighbors =
 			new HashMap<Integer, HashSet<Integer>>();
@@ -52,9 +54,12 @@ public class Simulator {
 		System.out.println("Number of solutions = " + partialSolutions.size()
 				+ "\n");
 
+
+		long runTime = System.currentTimeMillis() - startTime;
+		System.out.println("The run took " + runTime + " milliseconds.\n");
+		
 		for (int i = 0; i < partialSolutions.size(); i++) {
 			System.out.println(partialSolutions.get(i).stringify());
-
 		}
 
 	}
