@@ -4,8 +4,10 @@ import java.util.*;
 
 public class Simulator {
  
-	private static final int POPULATION_SIZE = 100;
-	private static final int GENERATIONS = 50;
+	private static final int NUMBER_RUNS = 100;
+	
+	private static int POPULATION_SIZE = 100;
+	private static int GENERATIONS = 60;
 	
 	private static final int TOURNAMENT_SIZE = 7;
 	private static final int GEOGRAPHY_RADIUS = 10;
@@ -14,10 +16,79 @@ public class Simulator {
 	private static final int MUTATION_PERCENT = 25;
 	//CLONE_PERCENT is effectively 100 - CROSSOVER_PERCENT - MUTATION_PERCENT.
 	
-	private static final boolean GENERATION_REPORT = true;
+	private static final boolean GENERATION_REPORT = false;
+	private static final boolean FINAL_REPORT = true;
 
 	
 	public static void main(String[] args) {
+		
+		for (int pop = 80; pop <= 200; pop += 20) {
+			POPULATION_SIZE = pop;
+
+			ArrayList<Long> times = new ArrayList<Long>();
+			ArrayList<Long> costs = new ArrayList<Long>();
+
+			for (int i = 0; i < NUMBER_RUNS; i++) {
+				//System.out.println(i + "th generation.");
+
+				long[] timeAndCost = runGP();
+				times.add(timeAndCost[0]);
+				costs.add(timeAndCost[1]);
+			}
+
+			long meanTime = calcMean(times);
+			long meanCost = calcMean(costs);
+
+			long stddevTime = calcStddev(times, meanTime);
+			long stddevCost = calcStddev(costs, meanCost);
+
+			System.out.println("Runs = " + NUMBER_RUNS + ", Population Size = "
+					+ POPULATION_SIZE + ", Generations = " + GENERATIONS);
+			System.out.println("Cost: mean = " + meanCost + ", stddev = "
+					+ stddevCost);
+			System.out.println("Time: mean = " + meanTime + ", stddev = "
+					+ stddevTime);
+			System.out.println("Max cost = " + findMax(costs));
+
+		}
+		
+	}
+	
+	private static long findMax(ArrayList<Long> elems){
+		long max = elems.get(0);
+		
+		for(long e : elems){
+			if(e > max)
+				max = e;
+		}
+		
+		return max;
+	}
+
+	private static long calcMean(ArrayList<Long> elems) {
+
+		long sum = 0;
+		for (long elem : elems){
+
+			sum += elem;
+			
+			//System.out.println(elem);
+			
+		}
+		
+		return sum / elems.size();
+	}
+	
+	private static long calcStddev(ArrayList<Long> elems, long meanElem) {
+		
+		long distFromMean = 0;
+		for (long elem : elems)
+			distFromMean += (elem - meanElem) * (elem - meanElem);
+			
+		return (long)Math.sqrt(distFromMean / (elems.size() - 1));
+	}
+
+	public static long[] runGP(){
 		
 		long startTime = System.currentTimeMillis();
 		
@@ -33,8 +104,23 @@ public class Simulator {
 			}
 		}
 		
-		finalReport(genNum, population, startTime);
+		long totalTime = System.currentTimeMillis() - startTime;
+		
+		Individual bestIndividual = population.get(0);
+		for(Individual ind : population){
+			if(ind.cost < bestIndividual.cost)
+				bestIndividual = ind;
+		}
+		
+		if(FINAL_REPORT)
+			finalReport(genNum, bestIndividual, totalTime);
+		
+		long[] timeAndCost = new long[2];
+		
+		timeAndCost[0] = totalTime;
+		timeAndCost[1] = (long)bestIndividual.cost;
 
+		return timeAndCost;
 	}
 
 
@@ -202,18 +288,10 @@ public class Simulator {
 		System.out.println();
 	}
 	
-	private static Individual finalReport(int genNum, ArrayList<Individual> population, long startTime) {
-		Individual bestIndividual = population.get(0);
-		
-		for(Individual ind : population){
-			if(ind.cost < bestIndividual.cost)
-				bestIndividual = ind;
-		}
-		
-		long runTime = System.currentTimeMillis() - startTime;
+	private static Individual finalReport(int genNum, Individual bestIndividual, long totalTime) {
 		
 		System.out.println("++++++++++ Final Report After " + genNum + " Generations ++++++++++");
-		System.out.println("The run took " + runTime + " milliseconds.");
+		System.out.println("The run took " + totalTime + " milliseconds.");
 		System.out.println("The best individual is:");
 		System.out.println(bestIndividual);
 		
